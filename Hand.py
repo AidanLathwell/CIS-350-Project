@@ -70,7 +70,7 @@ class Hand:
             and the hand value is greater than 21. This is because one of the aces was assigned
             a value of 11 prior to going over the 21 limit but it now changes to a 1 if it 
             would be less than 21 """
-        # implement code here
+        # Implement code here
 
         self.hand_value = new_hand_value
         return self.hand_value
