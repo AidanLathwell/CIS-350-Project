@@ -4,7 +4,7 @@ import random
 class Deck:
     def __init__(self):
 
-        # list variable that will hold the 312 cards in the current deck
+        # List variable that will hold the 312 cards in the current deck
         self.deck = []
 
     """ Method internally called by print message to represent list of cards. // chatgpt """
@@ -16,26 +16,26 @@ class Deck:
         then adds each card to the self.deck list after creation. """
     def create_deck(self):
 
-        # for loop that will iterate 6 times
+        # For loop that will iterate 6 times
         for deck in range(6):
 
-            # list containing the 4 types of suits
+            # List containing the 4 types of suits
             suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
-            # list containing the 13 different card values
+            # List containing the 13 different card values
             values = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"]
 
-            # iterate through each suit
+            # Iterate through each suit
             for suit in suits:
 
-                # iterate though each value
+                # Iterate though each value
                 for value in values:
                     new_card = Card(suit, value)
                     self.deck.append(new_card)
 
     """ Method used to randomize the deck after reaching cut card or starting game. """
     def shuffle_deck(self):
-        random.shuffle(self.deck)    # from python docs, built-in function to randomize sequence
+        random.shuffle(self.deck)    # From python docs, built-in function to randomize sequence
 
     def hit(self):
         if len(self.deck) >= 0:
