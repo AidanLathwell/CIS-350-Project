@@ -42,10 +42,3 @@ class Deck:
             return self.deck.pop(0)
         else:
             return None
-
-
-# test = Deck()
-# test.create_deck()
-# print(test)
-# test.shuffle_deck()
-# print(test)    # after shuffle
