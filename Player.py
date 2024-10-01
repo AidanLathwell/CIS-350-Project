@@ -81,25 +81,3 @@ class Player:
         if self.hand.hand_value > 21:
             bust = True
         return bust
-
-# from Deck import Deck
-#
-# deck = Deck()
-# deck.create_deck()
-# deck.shuffle_deck()
-#
-# test = Player("Logan", 100)
-# print(test)
-# test.hit(deck)
-# print(test)
-# test.hit(deck)
-# print(test)
-# test.hit(deck)
-# print(test)
-# test.hit(deck)
-# test.hit(deck)
-# print(test)
-#
-# print(test.hand.hand_value)
-# print(test.hand.allowed_to_hit)
-# print(test.check_bust())
