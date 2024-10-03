@@ -72,5 +72,6 @@ class Hand:
             would be less than 21 """
         # Implement code here
 
+        # assign temporary hand value to the self.hand_value variable for global use
         self.hand_value = new_hand_value
         return self.hand_value
