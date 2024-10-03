@@ -12,25 +12,31 @@ class Player:
         # Int variable to keep track of balance before and after playing games
         self.balance = balance
 
-    """ Method internally called by print message to represent list of cards. // chatgpt """
-    def __str__(self):
-        return f"Player: {self.name}, Balance: {self.balance}, Hand: {self.hand}"
+        # Boolean value to check if a player already hit this turn (for tracking doubles)
+        self.already_hit = False
 
+    """ Method internally called by print message to represent list of cards. """
+    def __str__(self):
+        return f"{self.name}'s Hand: {self.hand} ({self.hand.hand_value})"
+
+    """ Method that will handle placing bets and the amount for each round """
     def place_bets(self, amount):
         pass
 
-    """ Method that handles cases when a player decides to hit. It will first check that player
-        is allowed to hit under given circumstances and update the players hand and value"""
+    """ Method that handles cases when a player decides to hit. It will check if the player
+        is allowed to hit if their hand is larger than 17 because of aces, otherwise it will
+        do a normal hit. """
     def hit(self, deck):
 
         # Check if players current hand value is at least 17
-        if self.hand.hand_value <= 17:
+        if self.hand.hand_value >= 17:
 
             # If hand value is at least 17, check if player is still allowed to hit
             if self.hand.allowed_to_hit is True:
 
                 # Assign variable card to the top card returned from Deck class hit method
                 card = deck.hit()
+                self.already_hit = True
 
                 # Check if deck isn't empty
                 if card:
@@ -41,6 +47,22 @@ class Player:
                     then update allowed_to_hit variable to false since you can no longer hit. """
                 if self.hand.hand_value >= 17:
                     self.hand.allowed_to_hit = False
+        else:
+
+            # Assign variable card to the top card returned from Deck class hit method
+            card = deck.hit()
+            self.already_hit = True
+
+            # Check if deck isn't empty
+            if card:
+                self.hand.hand.append(card)  # Call hand method
+                self.hand.calc_hand_value()  # Call hand method
+
+            """ Check if hand value is now 17 or greater after hitting. If it is,
+                then update allowed_to_hit variable to false since you can no longer hit. """
+            if self.hand.hand_value >= 17:
+                self.hand.allowed_to_hit = False
+
         return self.hand
 
     """  Method that handles cases when a player decides to stand. It will update the variable
@@ -54,22 +76,39 @@ class Player:
         value. """
     def double(self, deck):
 
-        # Check if players current hand value is at least 17
-        if self.hand.hand_value <= 17:
+        if self.already_hit is False:
+            # Check if players current hand value is at least 17
+            if self.hand.hand_value <= 17:
 
-            # If hand value is atleast 17, check if player is still allowed to hit
-            if self.hand.allowed_to_hit is True:
+                # If hand value is atleast 17, check if player is still allowed to hit
+                if self.hand.allowed_to_hit is True:
 
-                # Assign variable card to the top card returned from Deck class hit method
-                card = deck.hit()
-                self.hand.hand.append(card)    # Call hand method
-                self.hand.allowed_to_hit = False
-                self.hand.calc_hand_value()    # Call hand method
+                    # Assign variable card to the top card returned from Deck class hit method
+                    card = deck.hit()
+                    self.already_hit = True
+                    self.hand.hand.append(card)    # Call hand method
+                    self.hand.allowed_to_hit = False
+                    self.hand.calc_hand_value()    # Call hand method
+        else:
+            print("You have already hit, you can not double.")
+
         return self.hand
 
-    """ Method that handles cases when a player decides to split. """
-    def split(self):
-        pass
+    # """ Method that handles cases when a player decides to split. """
+    # def split(self, deck):
+    #     new_hand = Hand()
+    #     split_card = self.hand.pop(0)
+    #     new_hand.append(split_card)
+    #
+    #     added_card_for_split = deck.hit()
+    #     if card_for_split:
+    #         new_hand.append(added_card_for_split)
+    #         new_hand.calc_hand_value()
+    #
+    #     if new_hand.hand_value >= 17:
+    #         new_hand.allowed_to_hit = False
+    #
+    #     return new_hand
 
     """ Method that returns a boolean value based on if the players hand busted or not. """
     def check_bust(self):
@@ -81,3 +120,25 @@ class Player:
         if self.hand.hand_value > 21:
             bust = True
         return bust
+
+# from Deck import Deck
+#
+# deck = Deck()
+# deck.create_deck()
+# deck.shuffle_deck()
+#
+# test = Player("Logan", 100)
+# print(test)
+# test.hit(deck)
+# print(test)
+# test.hit(deck)
+# print(test)
+# test.hit(deck)
+# print(test)
+# test.hit(deck)
+# test.hit(deck)
+# print(test)
+#
+# print(test.hand.hand_value)
+# print(test.hand.allowed_to_hit)
+# print(test.check_bust())
