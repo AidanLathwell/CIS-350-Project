@@ -19,7 +19,6 @@ class Deck:
         # For loop that will iterate 6 times
         for deck in range(6):
 
-            # List containing the 4 types of suits
             suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
             # List containing the 13 different card values
@@ -33,12 +32,25 @@ class Deck:
                     new_card = Card(suit, value)
                     self.deck.append(new_card)
 
+
     """ Method used to randomize the deck after reaching cut card or starting game. """
     def shuffle_deck(self):
         random.shuffle(self.deck)    # From python docs, built-in function to randomize sequence
 
+    """ Method used to grab the first card of the deck/card at index 0, and return it. """
     def hit(self):
+
+        # check if deck is empty
         if len(self.deck) >= 0:
+
+            # pop the first element out of the list and return it
             return self.deck.pop(0)
         else:
             return None
+
+
+# test = Deck()
+# test.create_deck()
+# print(test)
+# test.shuffle_deck()
+# print(test)    # after shuffle
