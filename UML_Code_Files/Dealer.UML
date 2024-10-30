@@ -1,1 +1,8 @@
-parsing Dealer.py...
+@startuml classes
+set namespaceSeparator none
+class "Dealer" as Dealer.Dealer {
+  balance : int
+  hand : Hand
+  play(deck)
+}
+@enduml

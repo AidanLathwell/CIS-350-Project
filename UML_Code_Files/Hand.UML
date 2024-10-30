@@ -1,1 +1,9 @@
-parsing Hand.py...
+@startuml classes
+set namespaceSeparator none
+class "Hand" as Hand.Hand {
+  allowed_to_hit : bool
+  hand : list
+  hand_value : int
+  calc_hand_value()
+}
+@enduml

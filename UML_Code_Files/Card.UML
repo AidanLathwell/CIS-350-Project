@@ -1,1 +1,7 @@
-parsing Card.py...
+@startuml classes
+set namespaceSeparator none
+class "Card" as Card.Card {
+  suit
+  value
+}
+@enduml
