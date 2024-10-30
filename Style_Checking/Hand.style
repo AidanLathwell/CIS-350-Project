@@ -1,0 +1,17 @@
+Hand.py:7:80: E501 line too long (87 > 79 characters)
+Hand.py:13:80: E501 line too long (92 > 79 characters)
+Hand.py:17:80: E501 line too long (90 > 79 characters)
+Hand.py:18:80: E501 line too long (85 > 79 characters)
+Hand.py:18:86: W291 trailing whitespace
+Hand.py:25:80: E501 line too long (84 > 79 characters)
+Hand.py:26:80: E501 line too long (85 > 79 characters)
+Hand.py:62:80: E501 line too long (85 > 79 characters)
+Hand.py:69:80: E501 line too long (90 > 79 characters)
+Hand.py:70:80: E501 line too long (95 > 79 characters)
+Hand.py:71:80: E501 line too long (90 > 79 characters)
+Hand.py:71:91: W291 trailing whitespace
+Hand.py:75:80: E501 line too long (84 > 79 characters)
+Hand.py:77:31: W292 no newline at end of file
+11      E501 line too long (87 > 79 characters)
+2       W291 trailing whitespace
+1       W292 no newline at end of file

@@ -1,1 +1,14 @@
-parsing Player.py...
+@startuml classes
+set namespaceSeparator none
+class "Player" as Player.Player {
+  already_hit : bool
+  balance
+  hand : Hand
+  name
+  check_bust()
+  double(deck)
+  hit(deck)
+  place_bets(amount)
+  stand()
+}
+@enduml

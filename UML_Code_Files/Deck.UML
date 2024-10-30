@@ -1,1 +1,9 @@
-parsing Deck.py...
+@startuml classes
+set namespaceSeparator none
+class "Deck" as Deck.Deck {
+  deck : list
+  create_deck()
+  hit()
+  shuffle_deck()
+}
+@enduml

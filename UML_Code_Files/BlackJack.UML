@@ -1,2 +1,15 @@
-parsing Card.py...
-parsing Blackjack_Game.py...
+@startuml classes
+set namespaceSeparator none
+class "Blackjack" as Blackjack_Game.Blackjack {
+  bet_amount : int
+  dealer : Dealer
+  deck
+  player : Player
+  winner : Player, NoneType, Dealer
+  deal()
+  dealer_turn()
+  determine_winner()
+  player_turn()
+  start()
+}
+@endumlparsing

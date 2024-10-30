@@ -1,1 +1,9 @@
-parsing Gui.py...
+@startuml classes
+set namespaceSeparator none
+class "Button" as Gui.Button {
+  clicked : bool
+  image
+  rect
+  draw()
+}
+@enduml
