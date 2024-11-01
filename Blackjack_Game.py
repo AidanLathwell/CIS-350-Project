@@ -228,6 +228,6 @@ class Blackjack:
     #         if decision == "Y" or decision == "y" or decision == "yes" or decision == "Yes":
     #             self.start()
 
-
-test = Blackjack()
-test.start()
+if __name__ == "main":
+    test = Blackjack()
+    test.start()
