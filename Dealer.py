@@ -1,4 +1,5 @@
 from Hand import Hand
+from Card import Card
 
 class Dealer:
     def __init__(self):
@@ -11,7 +12,42 @@ class Dealer:
 
     """ Method internally called by print message to represent list of cards. """
     def __str__(self):
-        return f"Dealer's Hand: {self.hand} ({self.hand.hand_value})"
+        hidden_card_value = 0
+        if len(self.hand.hand) == 2:
+            cards = Hand()
+            for card in self.hand.hand:
+                cards.hand.append(card)
+            display_card = cards.hand[0]
+            hidden_card = cards.hand[1]
+            if hidden_card.value == "Ace":
+                hidden_card_value -= 11
+            elif hidden_card.value == "1":
+                hidden_card_value -= 1
+            elif hidden_card.value == "2":
+                hidden_card_value -= 2
+            elif hidden_card.value == "3":
+                hidden_card_value -= 3
+            elif hidden_card.value == "4":
+                hidden_card_value -= 4
+            elif hidden_card.value == "5":
+                hidden_card_value -= 5
+            elif hidden_card.value == "6":
+                hidden_card_value -= 6
+            elif hidden_card.value == "7":
+                hidden_card_value -= 7
+            elif hidden_card.value == "8":
+                hidden_card_value -= 8
+            elif hidden_card.value == "9":
+                hidden_card_value -= 9
+            elif (hidden_card.value == "10" or hidden_card.value == "Jack" or
+                  hidden_card.value == "Queen" or hidden_card.value == "King"):
+                hidden_card_value -= 10
+
+            hidden_card_value = self.hand.hand_value + hidden_card_value
+
+            return (f"Dealer's Hand: [{display_card}, ?] ({hidden_card_value})")
+        else:
+            return f"Dealer's Hand: {self.hand} ({self.hand.hand_value})"
 
     """ Method to carry out a dealers turn in a round. This method is equivalent to the hit
         the player uses. It will add cards to the dealers hand until circumstances occur. """

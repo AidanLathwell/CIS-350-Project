@@ -25,24 +25,32 @@ class Blackjack:
 
         # Boolean variable to be updated based upon the winner of a round
         self.winner = None
+        self.winner2 = None
+
+        # variable to handle winner results when more than 1 hand
+        self.hand_count = 1
+
+        # variable to help determine winner for second hand
+        self.new_hand_split_hand_value_tracker = 0
+
+        # variable to handle play again instances instead of restarting program
+        self.game_over = False
 
     """ Method used to start the blackjack game, it will call all other methods to run the game. """
     def start(self):
         self.bet_amount = int(input("Enter wager amount: "))
-        print(self.player.balance)
-        print(self.bet_amount)
+        while (self.bet_amount > self.player.balance or self.bet_amount > self.dealer.balance
+                or self.bet_amount <=0):
+            self.bet_amount = int(input("Server: Wagers cannot exceed your wallet or be less than 0.\n"
+                                        "Enter wager amount: "))
         if self.bet_amount <= self.player.balance and self.bet_amount <= self.dealer.balance:
             self.deck.create_deck()
             self.deck.shuffle_deck()
             self.deal()
             self.player_turn()
-
-        # if self.player.hand.allowed_to_split is True:
-        #     self.player_turn()
-
             self.dealer_turn()
             self.determine_winner()
-        # self.play_again()
+            # self.play_again()
 
     """ Method used to deal first 2 cards to the dealer and player hands. """
     def deal(self):
@@ -108,6 +116,8 @@ class Blackjack:
         """ This while loop will iterate for the players entire hand. It will assign a players
             input to the variable "decision" and then perform a hit, stand, double, or split
             based on whichever input the variable says."""
+        new_hand_split = None
+        decision_count = 0
         while self.player.hand.allowed_to_hit is True:
 
             # String variable to assign to the players input
@@ -116,60 +126,88 @@ class Blackjack:
             # If statement that handles logic when a player decides to hit
             if decision == "H" or decision == "h" or decision == "hit" or decision == "Hit":
                 self.player.hit(self.deck)
-                print(f"{self.player} Vs. {self.dealer}")
+                decision_count += 1
+
+                if self.hand_count == 1:
+                    print(f"{self.player} Vs. {self.dealer}")
+
+                elif self.hand_count == 2:
+                    print(f"{self.player} Vs. {self.dealer}")
+                    print(f"{self.player.name}'s Hand 2: {new_hand_split} ({new_hand_split.hand_value}) Vs. {self.dealer}")
 
             # If statement that handles logic when a player decides to stand
             elif decision == "S" or decision == "s" or decision == "stand" or decision == "Stand":
                 self.player.stand()
-                print(f"{self.player} Vs. {self.dealer}")
+                decision_count += 1
+
+                if self.hand_count == 1:
+                    print(f"{self.player} Vs. {self.dealer}")
+
+                elif self.hand_count == 2:
+                    print(f"{self.player} Vs. {self.dealer}")
+                    print(f"{self.player.name}'s Hand 2: {new_hand_split} ({new_hand_split.hand_value}) Vs. {self.dealer}")
 
             # If statement that handles logic when a player decides to double
             elif decision == "D" or decision == "d" or decision == "double" or decision == "Double":
                 self.player.double(self.deck)
+                decision_count += 1
+
+                if self.hand_count == 1:
+                    print(f"{self.player} Vs. {self.dealer}")
+
+                elif self.hand_count == 2:
+                    print(f"{self.player} Vs. {self.dealer}")
+                    print(f"{self.player.name}'s Hand 2: {new_hand_split} ({new_hand_split.hand_value}) Vs. {self.dealer}")
+
+            # If statement that handles logic when a player decides to split
+            elif decision == "SP" or decision == "sp" or decision == "split" or decision == "Split":
+                self.hand_count += 1
+                new_hand_split = self.player.split(self.deck)
+                self.player.hit(self.deck)
+                decision_count += 1
                 print(f"{self.player} Vs. {self.dealer}")
+                print(f"{self.player.name}'s Hand 2: {new_hand_split} ({new_hand_split.hand_value}) Vs. {self.dealer}")
 
-            # # NEED CODE HERE FOR SPLITTING WHEN IMPLEMENTED
-            # # If statement that handles logic when a player decides to split
-            # elif (decision == "split" or decision == "Split" and
-            #       self.player.hand.allowed_to_split is True):
-            #     split_player_hand = self.player.split(self.deck)
-            #
-            #     new_card = deck.hit()
-            #     if new_card:
-            #         self.player.hand.append(new_card)
-            #         self.player.hand.calc_hand_value()
-            #
-            #     print(f"{self.player}, {split_player_hand} Vs. {self.dealer}")
+        """ This portion of code handles when a player finished their first hand but still has to 
+            play out their second hand. """
+        if new_hand_split is not None and self.player.hand.allowed_to_hit is False:
+            while new_hand_split.allowed_to_hit is True:
 
-        # """ Logic for handling when a player is allowed to hit """
-        # while self.player.hand.allowed_to_hit is False and self.player.hand.allowed_to_split is True:
-        #
-        #     # String variable to assign to the players input
-        #     decision = str(input("What would you like to do?: "))
-        #
-        #     if decision == "split" or decision == "Split" and self.player.hand.allowed_to_split is True:
-        #         split_player_hand = self.player.split(self.deck)
-        #
-        #         new_card = self.deck.hit()
-        #         if new_card:
-        #             self.player.hand.hand.append(new_card)
-        #             self.player.hand.calc_hand_value()
-        #
-        #         self.player.hand.allowed_to_hit = True
-        #         self.player.hand.allowed_to_split = False
-        #
-        #         same_count = 0
-        #         check_value_list = []
-        #         for each_card in self.player.hand.hand:
-        #             if same_count == 0:
-        #                 same_count += 1
-        #                 check_value_list.append(each_card.value)
-        #             elif same_count == 1:
-        #                 for value in check_value_list:
-        #                     if each_card.value == value:
-        #                         self.player.hand.allowed_to_split = True
-        #
-        #         print(f"{self.player}, {split_player_hand} Vs. {self.dealer}")
+                # String variable to assign to the players input
+                decision = str(input("What would you like to do with your second hand?: "))
+
+                # If statement that handles logic when a player decides to hit
+                if decision == "H" or decision == "h" or decision == "hit" or decision == "Hit":
+                    new_hand_split.hit(self.deck)
+                    decision_count += 1
+                    print(f"{self.player.name}'s Hand {new_hand_split} Vs. {self.dealer}")
+
+                # If statement that handles logic when a player decides to stand
+                elif decision == "S" or decision == "s" or decision == "stand" or decision == "Stand":
+                    new_hand_split.stand()
+                    decision_count += 1
+                    print(f"{self.player.name}'s Hand {new_hand_split} Vs. {self.dealer}")
+
+                # If statement that handles logic when a player decides to double
+                elif decision == "D" or decision == "d" or decision == "double" or decision == "Double":
+                    new_hand_split.double(self.deck)
+                    decision_count += 1
+                    print(f"{self.player.name}'s Hand {new_hand_split} Vs. {self.dealer}")
+
+                # # If statement that handles logic when a player decides to split
+                # elif decision == "SP" or decision == "sp" or decision == "split" or decision == "Split":
+                #     hand_count += 1
+                #     new_hand_split = self.player.split(self.deck)
+                #     self.player.hit(self.deck)
+                #     decision_count += 1
+                #     print(f"{self.player} Vs. {self.dealer}")
+                #     print(f"{self.player.name}'s Hand {new_hand_split} ({new_hand_split.hand_value}) Vs. {self.dealer}")
+
+        if self.hand_count == 2:
+            self.new_hand_split_hand_value_tracker += new_hand_split.hand_value
+
+        if decision_count == 0:
+            print("Server: Hand value >= 17. Auto stand")
 
     """ Method that handles the logic for the dealers turn. """
     def dealer_turn(self):
@@ -191,6 +229,8 @@ class Blackjack:
         have completed their hands(rounds). It will also assign payouts to both player and 
         dealer. """
     def determine_winner(self):
+
+        # hand 1 winner
         if 21 >= self.player.hand.hand_value > self.dealer.hand.hand_value:
             self.winner = self.player
             self.player.balance += self.bet_amount
@@ -210,24 +250,60 @@ class Blackjack:
         elif self.player.hand.hand_value == self.dealer.hand.hand_value:
             self.winner = None
 
-        if self.winner == self.player:
-            print(f"{self.player.name} wins!")
-        elif self.winner == self.dealer:
-            print("Dealer wins!")
-        else:
-            print("Push")
+        # hand 2 winner
+        if self.hand_count == 2:
+            if 21 >= self.new_hand_split_hand_value_tracker > self.dealer.hand.hand_value:
+                self.winner2 = self.player
+                self.player.balance += self.bet_amount
+                self.dealer.balance -= self.bet_amount
+            elif 21 >= self.dealer.hand.hand_value > self.new_hand_split_hand_value_tracker:
+                self.winner2 = self.dealer
+                self.player.balance -= self.bet_amount
+                self.dealer.balance += self.bet_amount
+            elif self.new_hand_split_hand_value_tracker > 21 >= self.dealer.hand.hand_value:
+                self.winner2 = self.dealer
+                self.player.balance -= self.bet_amount
+                self.dealer.balance += self.bet_amount
+            elif self.dealer.hand.hand_value > 21 >= self.new_hand_split_hand_value_tracker:
+                self.winner2 = self.player
+                self.player.balance += self.bet_amount
+                self.dealer.balance -= self.bet_amount
+            elif self.new_hand_split_hand_value_tracker == self.dealer.hand.hand_value:
+                self.winner2 = None
 
-        # self.player.hand.hand.clear()
-        # self.dealer.hand.hand.clear()
+        # handle winner results if only 1 hand
+        if self.winner2 is None:
+            if self.winner == self.player:
+                print(f"{self.player.name} wins!")
+            elif self.winner == self.dealer:
+                print("Dealer wins!")
+            else:
+                print("Push")
 
-        return self.winner
+        # hand winner results if 2 hands
+        if self.winner2 is not None:
+            if self.winner == self.player:
+                print(f"{self.player.name} wins hand 1!")
+            elif self.winner == self.dealer:
+                print("Dealer wins hand 1!")
+            elif self.winner is None:
+                print("Hand 1 resulted in a push.")
+
+            if self.winner2 == self.player:
+                print(f"{self.player.name} wins hand 2!")
+            elif self.winner2 == self.dealer:
+                print("Dealer wins hand 2!")
+            elif self.winner2 is None:
+                print("Hand 2 resulted in a push.")
 
     # def play_again(self):
     #     while self.player.balance > 0 and self.dealer.balance > 0:
-    #         decision = str(input("Play again?: "))
-    #         if decision == "Y" or decision == "y" or decision == "yes" or decision == "Yes":
+    #         self.game_over = str(input("Play again?: "))
+    #         if (self.game_over == "Y" or self.game_over == "y" or self.game_over == "yes"
+    #                 or self.game_over == "Yes"):
+    #             self.game_over = False
     #             self.start()
 
-if __name__ == "main":
-    test = Blackjack()
-    test.start()
+
+test = Blackjack()
+test.start()

@@ -1,3 +1,5 @@
+from Card import Card
+
 class Hand:
     def __init__(self):
 
@@ -9,6 +11,9 @@ class Hand:
 
         # Boolean variable to update if a player can still hit or not
         self.allowed_to_hit = True
+
+        # Boolean variable to update if a player can still split or not
+        self.allowed_to_split = False
 
     """ Method internally called by print message to represent list of cards. // chatgpt """
     def __str__(self):
@@ -39,8 +44,7 @@ class Hand:
                         new_hand_value += 1
                     else:
                         new_hand_value += 11
-                else:
-                    new_hand_value += 11
+
             elif card.value == "1":
                 new_hand_value += 1
             elif card.value == "2":
@@ -63,15 +67,72 @@ class Hand:
                   or card.value == "King"):
                 new_hand_value += 10
 
+        """ Handling multiple aces new hand value (specifically this part of code will be
+            used when hitting, doubling, or splitting during the game)"""
         if len(self.hand) > 2 and aces_count == 1 and new_hand_value > 21:
             new_hand_value -= 10
 
-        """ NEED code here to handle situations where there is more than 1 ace in the hand
-            and the hand value is greater than 21. This is because one of the aces was assigned
-            a value of 11 prior to going over the 21 limit but it now changes to a 1 if it 
-            would be less than 21 """
-        # Implement code here
+        """ Only 1 ace in your hand will ever be 11. This portion of code will handle
+            re evaluting your hand value if you hit and go over 21 while sitll having
+            an ace with the value of 11. """
+        already_counted_aces = 0
+        if aces_count >= 2 and new_hand_value > 21:
+            for card in self.hand:
+                if card.value == "Ace":
+                    already_counted_aces += 1
+                if already_counted_aces == 2 and new_hand_value > 21:
+                    break
+                if card.value == "Ace" and already_counted_aces == 1 and new_hand_value > 21:
+                    new_hand_value -= 10
 
         # assign temporary hand value to the self.hand_value variable for global use
         self.hand_value = new_hand_value
         return self.hand_value
+
+    """ Logic for when you create another hand. Cannot access action in player class
+        since hand is a hand ovject not a player"""
+
+    def hit(self, deck):
+
+        # Check if players current hand value is at least 17
+        if self.hand_value >= 17:
+
+            # If hand value is at least 17, check if player is still allowed to hit
+            if self.allowed_to_hit is True:
+
+                # Assign variable card to the top card returned from Deck class hit method
+                card = deck.hit()
+                self.already_hit = True
+
+                # Check if deck isn't empty
+                if card:
+                    self.hand.append(card)    # Call hand method
+                    self.calc_hand_value()    # Call hand method
+
+                """ Check if hand value is now 17 or greater after hitting. If it is,
+                    then update allowed_to_hit variable to false since you can no longer hit. """
+                if self.hand_value >= 17:
+                    self.allowed_to_hit = False
+        else:
+
+            # Assign variable card to the top card returned from Deck class hit method
+            card = deck.hit()
+            self.already_hit = True
+
+            # Check if deck isn't empty
+            if card:
+                self.hand.append(card)  # Call hand method
+                self.calc_hand_value()  # Call hand method
+
+            """ Check if hand value is now 17 or greater after hitting. If it is,
+                then update allowed_to_hit variable to false since you can no longer hit. """
+            if self.hand_value >= 17:
+                self.allowed_to_hit = False
+
+        return self.hand
+
+    """  Method that handles cases when a player decides to stand. It will update the variable
+         allowed_to_hit to false because after standing a player is no longer allowed to hit. """
+    def stand(self):
+        self.allowed_to_hit = False
+        return self.hand

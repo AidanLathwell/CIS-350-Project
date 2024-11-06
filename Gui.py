@@ -29,24 +29,27 @@ class Button:
     def draw(self):
         action = False
 
-        # get mouse postion
+        # get mouse position
         pos = pygame.mouse.get_pos()
 
         # check mouse over button and clicked the button
         if self.rect.collidepoint(pos):
 
-            # check if button was clicked (tuple rep. 0 means left click)
+            # check if button was clicked (tuple rep. 0 means left click, 1 middle click, 2 right click)
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 self.clicked = True
                 action = True
 
+            # make it so that button is clicked once instead of multiple times after 1 click
             if pygame.mouse.get_pressed()[0] == 0:
                 self.clicked = False
 
+        # draw onto screen
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
         return action
 
+# create instances of each button
 hit_button = Button(83, 500, hit_img, 0.75)
 stand_button = Button(243, 500, stand_img, 0.75)
 double_button = Button(403, 500, double_img, 0.75)

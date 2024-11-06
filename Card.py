@@ -7,6 +7,6 @@ class Card:
         # String variable to represent the value of the card
         self.value = value
 
-    """ Method internally called by print message to represent list of cards. // chatgpt """
+    """ Method internally called by print message to represent list of cards. """
     def __str__(self):
         return f"{self.value} of {self.suit}"

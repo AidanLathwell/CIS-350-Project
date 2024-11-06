@@ -1,4 +1,5 @@
 from Hand import Hand
+from Card import Card
 
 class Player:
     def __init__(self, name, balance):
@@ -90,25 +91,33 @@ class Player:
                     self.hand.allowed_to_hit = False
                     self.hand.calc_hand_value()    # Call hand method
         else:
-            print("You have already hit, you can not double.")
+            print("Server: You have already hit, you can not double.")
 
         return self.hand
 
-    # """ Method that handles cases when a player decides to split. """
-    # def split(self, deck):
-    #     new_hand = Hand()
-    #     split_card = self.hand.pop(0)
-    #     new_hand.append(split_card)
-    #
-    #     added_card_for_split = deck.hit()
-    #     if card_for_split:
-    #         new_hand.append(added_card_for_split)
-    #         new_hand.calc_hand_value()
-    #
-    #     if new_hand.hand_value >= 17:
-    #         new_hand.allowed_to_hit = False
-    #
-    #     return new_hand
+    """ Method that handles cases when a player decides to split. """
+    def split(self, deck):
+
+        if self.already_hit is False:
+
+            new_hand = Hand()
+            split_card = self.hand.hand.pop(1)
+            new_hand.hand.append(split_card)
+
+            # add card to new hand
+            card_for_hand = deck.hit()
+            if card_for_hand:
+                new_hand.hand.append(card_for_hand)
+                new_hand.calc_hand_value()
+
+            if new_hand.hand_value >= 17:
+                new_hand.allowed_to_hit = False
+
+        else:
+            print("Server: Cannot split without identical cards.")
+
+        return new_hand
+
 
     """ Method that returns a boolean value based on if the players hand busted or not. """
     def check_bust(self):
