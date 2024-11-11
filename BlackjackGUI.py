@@ -101,8 +101,8 @@ class Blackjack:
         self.club_card_10 = pygame.image.load('Graphics/clubs/card_clubs_10.png').convert_alpha()
         self.club_card_A = pygame.image.load('Graphics/clubs/card_clubs_A.png').convert_alpha()
         self.club_card_J = pygame.image.load('Graphics/clubs/card_clubs_J.png').convert_alpha()
-        self.club_card_Q = pygame.image.load('Graphics/clubs/card_clubs_K.png').convert_alpha()
-        self.club_card_K = pygame.image.load('Graphics/clubs/card_clubs_Q.png').convert_alpha()
+        self.club_card_Q = pygame.image.load('Graphics/clubs/card_clubs_Q.png').convert_alpha()
+        self.club_card_K = pygame.image.load('Graphics/clubs/card_clubs_K.png').convert_alpha()
 
         # load diamond images
         self.diamond_card_2 = pygame.image.load('Graphics/diamonds/card_diamonds_02.png').convert_alpha()
@@ -116,8 +116,8 @@ class Blackjack:
         self.diamond_card_10 = pygame.image.load('Graphics/diamonds/card_diamonds_10.png').convert_alpha()
         self.diamond_card_A = pygame.image.load('Graphics/diamonds/card_diamonds_A.png').convert_alpha()
         self.diamond_card_J = pygame.image.load('Graphics/diamonds/card_diamonds_J.png').convert_alpha()
-        self.diamond_card_Q = pygame.image.load('Graphics/diamonds/card_diamonds_K.png').convert_alpha()
-        self.diamond_card_K = pygame.image.load('Graphics/diamonds/card_diamonds_Q.png').convert_alpha()
+        self.diamond_card_Q = pygame.image.load('Graphics/diamonds/card_diamonds_Q.png').convert_alpha()
+        self.diamond_card_K = pygame.image.load('Graphics/diamonds/card_diamonds_K.png').convert_alpha()
 
         # load heart images
         self.hearts_card_2 = pygame.image.load('Graphics/hearts/card_hearts_02.png').convert_alpha()
@@ -131,8 +131,8 @@ class Blackjack:
         self.hearts_card_10 = pygame.image.load('Graphics/hearts/card_hearts_10.png').convert_alpha()
         self.hearts_card_A = pygame.image.load('Graphics/hearts/card_hearts_A.png').convert_alpha()
         self.hearts_card_J = pygame.image.load('Graphics/hearts/card_hearts_J.png').convert_alpha()
-        self.hearts_card_Q = pygame.image.load('Graphics/hearts/card_hearts_K.png').convert_alpha()
-        self.hearts_card_K = pygame.image.load('Graphics/hearts/card_hearts_Q.png').convert_alpha()
+        self.hearts_card_Q = pygame.image.load('Graphics/hearts/card_hearts_Q.png').convert_alpha()
+        self.hearts_card_K = pygame.image.load('Graphics/hearts/card_hearts_K.png').convert_alpha()
 
         # load spade images
         self.spades_card_2 = pygame.image.load('Graphics/spades/card_spades_02.png').convert_alpha()
@@ -146,8 +146,8 @@ class Blackjack:
         self.spades_card_10 = pygame.image.load('Graphics/spades/card_spades_10.png').convert_alpha()
         self.spades_card_A = pygame.image.load('Graphics/spades/card_spades_A.png').convert_alpha()
         self.spades_card_J = pygame.image.load('Graphics/spades/card_spades_J.png').convert_alpha()
-        self.spades_card_Q = pygame.image.load('Graphics/spades/card_spades_K.png').convert_alpha()
-        self.spades_card_K = pygame.image.load('Graphics/spades/card_spades_Q.png').convert_alpha()
+        self.spades_card_Q = pygame.image.load('Graphics/spades/card_spades_Q.png').convert_alpha()
+        self.spades_card_K = pygame.image.load('Graphics/spades/card_spades_K.png').convert_alpha()
 
         # create instances
         self.hit_button = Button(83, 500, self.hit_img, 0.75)
@@ -332,8 +332,10 @@ class Blackjack:
                 print(self.player.hand)
                 print('DOUBLE')
             elif self.split_button.draw():
-                self.player.split(self.deck)
+                new_hand = self.player.split(self.deck)
+                self.player.hit(self.deck)
                 print(self.player.hand)
+                print(new_hand)
                 print('SPLIT')
 
             pygame.display.update()
