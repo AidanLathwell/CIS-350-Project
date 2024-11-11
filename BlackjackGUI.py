@@ -77,6 +77,7 @@ class Blackjack:
         self.player_card_2 = None
         self.dealer_card_1 = None
         self.dealer_card_2 = None
+        self.dealer_hidden_card = None
 
         # load button images
         self.hit_img = pygame.image.load('hit.png').convert_alpha()
@@ -157,11 +158,79 @@ class Blackjack:
         self.card_outline_table_1 = Outline(95, 250, self.card_outline, 0.75)
         self.card_outline_table_2 = Outline(95, 70, self.card_outline, 0.75)
 
+        # create dictionary for easy image access
+        self.card_images = {
+            "Clubs": {
+                "Ace": self.club_card_A,
+                "2": self.club_card_2,
+                "3": self.club_card_3,
+                "4": self.club_card_4,
+                "5": self.club_card_5,
+                "6": self.club_card_6,
+                "7": self.club_card_7,
+                "8": self.club_card_8,
+                "9": self.club_card_9,
+                "10": self.club_card_10,
+                "Jack": self.club_card_J,
+                "Queen": self.club_card_Q,
+                "King": self.club_card_K
+            },
+            "Diamonds": {
+                "Ace": self.diamond_card_A,
+                "2": self.diamond_card_2,
+                "3": self.diamond_card_3,
+                "4": self.diamond_card_4,
+                "5": self.diamond_card_5,
+                "6": self.diamond_card_6,
+                "7": self.diamond_card_7,
+                "8": self.diamond_card_8,
+                "9": self.diamond_card_9,
+                "10": self.diamond_card_10,
+                "Jack": self.diamond_card_J,
+                "Queen": self.diamond_card_Q,
+                "King": self.diamond_card_K
+            },
+            "Hearts": {
+                "Ace": self.hearts_card_A,
+                "2": self.hearts_card_2,
+                "3": self.hearts_card_3,
+                "4": self.hearts_card_4,
+                "5": self.hearts_card_5,
+                "6": self.hearts_card_6,
+                "7": self.hearts_card_7,
+                "8": self.hearts_card_8,
+                "9": self.hearts_card_9,
+                "10": self.hearts_card_10,
+                "Jack": self.hearts_card_J,
+                "Queen": self.hearts_card_Q,
+                "King": self.hearts_card_K
+            },
+            "Spades": {
+                "Ace": self.spades_card_A,
+                "2": self.spades_card_2,
+                "3": self.spades_card_3,
+                "4": self.spades_card_4,
+                "5": self.spades_card_5,
+                "6": self.spades_card_6,
+                "7": self.spades_card_7,
+                "8": self.spades_card_8,
+                "9": self.spades_card_9,
+                "10": self.spades_card_10,
+                "Jack": self.spades_card_J,
+                "Queen": self.spades_card_Q,
+                "King": self.spades_card_K
+            }
+        }
+
     def start(self):
         if self.bet_amount <= self.player.balance and self.bet_amount <= self.dealer.balance:
             self.deck.create_deck()
             self.deck.shuffle_deck()
             self.deal()
+
+    # method used to get card images based on card value and suit from dict
+    def get_card(self, card):
+        return self.card_images[card.suit][card.value]
 
     """ Method used to deal first 2 cards to the dealer and player hands. """
     def deal(self):
@@ -219,237 +288,21 @@ class Blackjack:
                     self.dealer.hand.allowed_to_hit = False
 
         # display starting hands on the screen
-        storage = []
-        for card in self.player.hand.hand:
-            if card.suit == "Clubs":
-                if card.value == "Ace":
-                    display_card = self.club_card_A
-                elif card.value == "2":
-                    display_card = self.club_card_2
-                elif card.value == "3":
-                    display_card = self.club_card_3
-                elif card.value == "4":
-                    display_card = self.club_card_4
-                elif card.value == "5":
-                    display_card = self.club_card_5
-                elif card.value == "6":
-                    display_card = self.club_card_6
-                elif card.value == "7":
-                    display_card = self.club_card_7
-                elif card.value == "8":
-                    display_card = self.club_card_8
-                elif card.value == "9":
-                    display_card = self.club_card_9
-                elif card.value == "10":
-                    display_card = self.club_card_10
-                elif card.value == "Jack":
-                    display_card = self.club_card_J
-                elif card.value == "Queen":
-                    display_card = self.club_card_Q
-                elif card.value == "King":
-                    display_card = self.club_card_K
-            elif card.suit == "Diamonds":
-                if card.value == "Ace":
-                    display_card = self.diamond_card_A
-                elif card.value == "2":
-                    display_card = self.diamond_card_2
-                elif card.value == "3":
-                    display_card = self.diamond_card_3
-                elif card.value == "4":
-                    display_card = self.diamond_card_4
-                elif card.value == "5":
-                    display_card = self.diamond_card_5
-                elif card.value == "6":
-                    display_card = self.diamond_card_6
-                elif card.value == "7":
-                    display_card = self.diamond_card_7
-                elif card.value == "8":
-                    display_card = self.diamond_card_8
-                elif card.value == "9":
-                    display_card = self.diamond_card_9
-                elif card.value == "10":
-                    display_card = self.diamond_card_10
-                elif card.value == "Jack":
-                    display_card = self.diamond_card_J
-                elif card.value == "Queen":
-                    display_card = self.diamond_card_Q
-                elif card.value == "King":
-                    display_card = self.diamond_card_K
-            elif card.suit == "Hearts":
-                if card.value == "Ace":
-                    display_card = self.hearts_card_A
-                elif card.value == "2":
-                    display_card = self.hearts_card_2
-                elif card.value == "3":
-                    display_card = self.hearts_card_3
-                elif card.value == "4":
-                    display_card = self.hearts_card_4
-                elif card.value == "5":
-                    display_card = self.hearts_card_5
-                elif card.value == "6":
-                    display_card = self.hearts_card_6
-                elif card.value == "7":
-                    display_card = self.hearts_card_7
-                elif card.value == "8":
-                    display_card = self.hearts_card_8
-                elif card.value == "9":
-                    display_card = self.hearts_card_9
-                elif card.value == "10":
-                    display_card = self.hearts_card_10
-                elif card.value == "Jack":
-                    display_card = self.hearts_card_J
-                elif card.value == "Queen":
-                    display_card = self.hearts_card_Q
-                elif card.value == "King":
-                    display_card = self.hearts_card_K
-            elif card.suit == "Spades":
-                if card.value == "Ace":
-                    display_card = self.spades_card_A
-                elif card.value == "2":
-                    display_card = self.spades_card_2
-                elif card.value == "3":
-                    display_card = self.spades_card_3
-                elif card.value == "4":
-                    display_card = self.spades_card_4
-                elif card.value == "5":
-                    display_card = self.spades_card_5
-                elif card.value == "6":
-                    display_card = self.spades_card_6
-                elif card.value == "7":
-                    display_card = self.spades_card_7
-                elif card.value == "8":
-                    display_card = self.spades_card_8
-                elif card.value == "9":
-                    display_card = self.spades_card_9
-                elif card.value == "10":
-                    display_card = self.spades_card_10
-                elif card.value == "Jack":
-                    display_card = self.spades_card_J
-                elif card.value == "Queen":
-                    display_card = self.spades_card_Q
-                elif card.value == "King":
-                    display_card = self.spades_card_K
-            storage.append(display_card)
-        self.player_card_1 = cardObject(108, 305, storage[0], 2.5)
-        self.player_card_2 = cardObject(178, 305, storage[1], 2.5)
+        image_for_player_first_card = self.get_card(self.player.hand.hand[0])
+        image_for_player_second_card = self.get_card(self.player.hand.hand[1])
+        self.player_card_1 = cardObject(108, 305, image_for_player_first_card, 2.5)
+        self.player_card_2 = cardObject(178, 305, image_for_player_second_card, 2.5)
 
-        for card in self.dealer.hand.hand:
-            if card.suit == "Clubs":
-                if card.value == "Ace":
-                    display_card = self.club_card_A
-                elif card.value == "2":
-                    display_card = self.club_card_2
-                elif card.value == "3":
-                    display_card = self.club_card_3
-                elif card.value == "4":
-                    display_card = self.club_card_4
-                elif card.value == "5":
-                    display_card = self.club_card_5
-                elif card.value == "6":
-                    display_card = self.club_card_6
-                elif card.value == "7":
-                    display_card = self.club_card_7
-                elif card.value == "8":
-                    display_card = self.club_card_8
-                elif card.value == "9":
-                    display_card = self.club_card_9
-                elif card.value == "10":
-                    display_card = self.club_card_10
-                elif card.value == "Jack":
-                    display_card = self.club_card_J
-                elif card.value == "Queen":
-                    display_card = self.club_card_Q
-                elif card.value == "King":
-                    display_card = self.club_card_K
-            elif card.suit == "Diamonds":
-                if card.value == "Ace":
-                    display_card = self.diamond_card_A
-                elif card.value == "2":
-                    display_card = self.diamond_card_2
-                elif card.value == "3":
-                    display_card = self.diamond_card_3
-                elif card.value == "4":
-                    display_card = self.diamond_card_4
-                elif card.value == "5":
-                    display_card = self.diamond_card_5
-                elif card.value == "6":
-                    display_card = self.diamond_card_6
-                elif card.value == "7":
-                    display_card = self.diamond_card_7
-                elif card.value == "8":
-                    display_card = self.diamond_card_8
-                elif card.value == "9":
-                    display_card = self.diamond_card_9
-                elif card.value == "10":
-                    display_card = self.diamond_card_10
-                elif card.value == "Jack":
-                    display_card = self.diamond_card_J
-                elif card.value == "Queen":
-                    display_card = self.diamond_card_Q
-                elif card.value == "King":
-                    display_card = self.diamond_card_K
-            elif card.suit == "Hearts":
-                if card.value == "Ace":
-                    display_card = self.hearts_card_A
-                elif card.value == "2":
-                    display_card = self.hearts_card_2
-                elif card.value == "3":
-                    display_card = self.hearts_card_3
-                elif card.value == "4":
-                    display_card = self.hearts_card_4
-                elif card.value == "5":
-                    display_card = self.hearts_card_5
-                elif card.value == "6":
-                    display_card = self.hearts_card_6
-                elif card.value == "7":
-                    display_card = self.hearts_card_7
-                elif card.value == "8":
-                    display_card = self.hearts_card_8
-                elif card.value == "9":
-                    display_card = self.hearts_card_9
-                elif card.value == "10":
-                    display_card = self.hearts_card_10
-                elif card.value == "Jack":
-                    display_card = self.hearts_card_J
-                elif card.value == "Queen":
-                    display_card = self.hearts_card_Q
-                elif card.value == "King":
-                    display_card = self.hearts_card_K
-            elif card.suit == "Spades":
-                if card.value == "Ace":
-                    display_card = self.spades_card_A
-                elif card.value == "2":
-                    display_card = self.spades_card_2
-                elif card.value == "3":
-                    display_card = self.spades_card_3
-                elif card.value == "4":
-                    display_card = self.spades_card_4
-                elif card.value == "5":
-                    display_card = self.spades_card_5
-                elif card.value == "6":
-                    display_card = self.spades_card_6
-                elif card.value == "7":
-                    display_card = self.spades_card_7
-                elif card.value == "8":
-                    display_card = self.spades_card_8
-                elif card.value == "9":
-                    display_card = self.spades_card_9
-                elif card.value == "10":
-                    display_card = self.spades_card_10
-                elif card.value == "Jack":
-                    display_card = self.spades_card_J
-                elif card.value == "Queen":
-                    display_card = self.spades_card_Q
-                elif card.value == "King":
-                    display_card = self.spades_card_K
-            storage.append(display_card)
-        self.dealer_card_1 = cardObject(108, 80, storage[2], 2.5)
-        self.dealer_card_2 = cardObject(178, 80, storage[3], 2.5)
+        image_for_dealer_first_card = self.get_card(self.dealer.hand.hand[0])
+        image_for_dealer_second_card = self.get_card(self.dealer.hand.hand[1])
+        self.dealer_card_1 = cardObject(108, 80, image_for_dealer_first_card, 2.5)
+        self.dealer_card_2 = cardObject(178, 80, image_for_dealer_second_card, 2.5)
+        self.dealer_hidden_card = cardObject(178, 80, self.card_back_img, 2.5)
 
     def play_game(self):
+        self.start()
         run = True
         while run is True:
-            self.start()
 
             # set color of backround
             self.screen.fill((53, 101, 77))
@@ -457,19 +310,30 @@ class Blackjack:
             self.card_outline_table_1.draw()
             self.card_outline_table_2.draw()
 
-            # display inital hands for player and dealer
+            # display initial hands for player and dealer
             self.dealer_card_1.draw()
-            self.dealer_card_2.draw()
+            self.dealer_hidden_card.draw()
             self.player_card_1.draw()
             self.player_card_2.draw()
 
             if self.hit_button.draw():
+                self.player.hit(self.deck)
+                new_card = self.get_card(self.player.hand.hand[-1])
+                display = cardObject(248, 305, new_card, 2.5)
+                display.draw()
+                print(self.player.hand)
                 print("HIT")
             elif self.stand_button.draw():
+                self.player.stand()
+                print(self.player.hand)
                 print('STAND')
             elif self.double_button.draw():
+                self.player.double(self.deck)
+                print(self.player.hand)
                 print('DOUBLE')
             elif self.split_button.draw():
+                self.player.split(self.deck)
+                print(self.player.hand)
                 print('SPLIT')
 
             pygame.display.update()
