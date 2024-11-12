@@ -36,10 +36,12 @@ class Button:
             if pygame.mouse.get_pressed()[0] == 0:
                 self.clicked = False
 
+        return action
+
+    def blit(self):
+
         # draw onto screen
         screen.blit(self.image, (self.rect.x, self.rect.y))
-
-        return action
 
 class Outline:
     def __init__(self, x, y, image, scale):
@@ -307,6 +309,10 @@ class Blackjack:
             # set color of backround
             self.screen.fill((53, 101, 77))
 
+            self.hit_button.blit()
+            self.stand_button.blit()
+            self.double_button.blit()
+            self.split_button.blit()
             self.card_outline_table_1.draw()
             self.card_outline_table_2.draw()
 
@@ -316,27 +322,28 @@ class Blackjack:
             self.player_card_1.draw()
             self.player_card_2.draw()
 
-            if self.hit_button.draw():
-                self.player.hit(self.deck)
-                new_card = self.get_card(self.player.hand.hand[-1])
-                display = cardObject(248, 305, new_card, 2.5)
-                display.draw()
-                print(self.player.hand)
-                print("HIT")
-            elif self.stand_button.draw():
-                self.player.stand()
-                print(self.player.hand)
-                print('STAND')
-            elif self.double_button.draw():
-                self.player.double(self.deck)
-                print(self.player.hand)
-                print('DOUBLE')
-            elif self.split_button.draw():
-                new_hand = self.player.split(self.deck)
-                self.player.hit(self.deck)
-                print(self.player.hand)
-                print(new_hand)
-                print('SPLIT')
+            while self.player.hand.allowed_to_hit is True:
+                if self.hit_button.draw():
+                    self.player.hit(self.deck)
+                    new_card = self.get_card(self.player.hand.hand[-1])
+                    display = cardObject(248, 305, new_card, 2.5)
+                    display.draw()
+                    print(self.player.hand)
+                    print("HIT")
+                elif self.stand_button.draw():
+                    self.player.stand()
+                    print(self.player.hand)
+                    print('STAND')
+                elif self.double_button.draw():
+                    self.player.double(self.deck)
+                    print(self.player.hand)
+                    print('DOUBLE')
+                elif self.split_button.draw():
+                    new_hand = self.player.split(self.deck)
+                    self.player.hit(self.deck)
+                    print(self.player.hand)
+                    print(new_hand)
+                    print('SPLIT')
 
             pygame.display.update()
 
