@@ -89,6 +89,7 @@ class Blackjack:
         # load card extras images
         self.card_back_img = pygame.image.load('Graphics/card extras/card_back.png').convert_alpha()
         self.card_outline = pygame.image.load('Graphics/card extras/card_outline.png').convert_alpha()
+        self.cut_card = pygame.image.load('Graphics/card extras/cut_card.png').convert_alpha()
 
         # load club images
         self.club_card_2 = pygame.image.load('Graphics/clubs/card_clubs_02.png').convert_alpha()
@@ -220,6 +221,9 @@ class Blackjack:
                 "Jack": self.spades_card_J,
                 "Queen": self.spades_card_Q,
                 "King": self.spades_card_K
+            },
+            "None": {
+                "Cut Card": self.cut_card
             }
         }
 
@@ -345,6 +349,7 @@ class Blackjack:
                     print(self.player.hand)
                     print(new_hand)
                     print('SPLIT')
+                pygame.display.update()
 
             pygame.display.update()
 
