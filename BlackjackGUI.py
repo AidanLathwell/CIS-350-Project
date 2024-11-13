@@ -39,7 +39,6 @@ class Button:
         return action
 
     def blit(self):
-
         # draw onto screen
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
@@ -306,7 +305,7 @@ class Blackjack:
         run = True
         while run is True:
 
-            # set color of backround
+            # set color of background
             self.screen.fill((53, 101, 77))
 
             self.hit_button.blit()
@@ -322,7 +321,9 @@ class Blackjack:
             self.player_card_1.draw()
             self.player_card_2.draw()
 
-            while self.player.hand.allowed_to_hit is True:
+            pygame.display.update()
+
+            while self.player.hand.allowed_to_hit:
                 if self.hit_button.draw():
                     self.player.hit(self.deck)
                     new_card = self.get_card(self.player.hand.hand[-1])
