@@ -72,6 +72,8 @@ class Blackjack:
         self.bet_amount = 25
         self.game_over = False
         self.screen = screen
+        self.cards_added_during_player_turn = []
+        self.cards_added_during_dealer_turn = []
 
         # initial cards
         self.player_card_1 = None
@@ -325,15 +327,17 @@ class Blackjack:
             self.player_card_1.draw()
             self.player_card_2.draw()
 
-            pygame.display.update()
+            for card in self.cards_added_during_player_turn:
+                card.draw()
 
-            while self.player.hand.allowed_to_hit:
+            if self.player.hand.allowed_to_hit:
                 if self.hit_button.draw():
                     self.player.hit(self.deck)
                     new_card = self.get_card(self.player.hand.hand[-1])
                     display = cardObject(248, 305, new_card, 2.5)
-                    display.draw()
+                    self.cards_added_during_player_turn.append(display)
                     print(self.player.hand)
+                    print(self.player.hand.allowed_to_hit)
                     print("HIT")
                 elif self.stand_button.draw():
                     self.player.stand()
