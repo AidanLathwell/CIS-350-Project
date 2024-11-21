@@ -5,10 +5,11 @@ from Deck import Deck
 from Hand import Hand
 from Player import Player
 
+
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
 
-
+""" Button class that wil create button objects to display on the screen. """
 class Button:
     def __init__(self, x, y, image, scale):
         width = image.get_width()
@@ -18,32 +19,34 @@ class Button:
         self.rect.topleft = (x, y)
         self.clicked = False  # for preventing multiple clicks when only clicking once
 
-    # method will draw the button on the screen and handle getting clicked
+    """ Method will determine if a button gets clicked. """
     def draw(self):
         action = False
 
-        # get mouse position
+        # Get mouse position
         pos = pygame.mouse.get_pos()
 
-        # check mouse over button and clicked the button
+        # Check mouse over button and clicked the button
         if self.rect.collidepoint(pos):
 
-            # check if button was clicked (tuple rep. 0 means left click, 1 middle click, 2 right click)
+            # Check if button was clicked (tuple rep. 0 means left click, 1 middle click, 2 right click)
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 self.clicked = True
                 action = True
 
-            # make it so that button is clicked once instead of multiple times after 1 click
+            # Make it so that button is clicked once instead of multiple times after 1 click
             if pygame.mouse.get_pressed()[0] == 0:
                 self.clicked = False
 
         return action
 
+    """ Method that will draw the button on to the screen. """
     def blit(self):
-        # draw onto screen
+
+        # Draw onto screen
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
-
+""" Outline class that will create the outline of the blackjack table on the screen. """
 class Outline:
     def __init__(self, x, y, image, scale):
         width = image.get_width()
@@ -52,10 +55,11 @@ class Outline:
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
 
+    """ Method that will draw the outlines on to the screen. """
     def draw(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
-
+""" Card object class which transforms card png images into drawable objects. """
 class cardObject:
     def __init__(self, x, y, image, scale):
         width = image.get_width()
@@ -64,19 +68,21 @@ class cardObject:
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
 
+    """ Method that will draw the cards on to the screen. """
     def draw(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
+""" Blackjack class that will run the gui and all game logic. """
 class Blackjack:
     def __init__(self, screen):
+
+        # Instance Variables
         self.deck = Deck()
         self.player = Player('Player', 1000)
         self.dealer = Dealer()
         self.bet_amount = 25
         self.game_over = False
-        self.hand_count = 1
-        self.winner_one = None
-        self.winner_two = None
+        self.winner = None
         self.screen = screen
         self.currently_player_turn = True
         self.currently_dealer_turn = False
@@ -84,31 +90,27 @@ class Blackjack:
         self.cards_added_during_dealer_turn = []
         self.game_over_card_display = []
         self.pause_iterations_for_game_over = False
-        self.split_hand = None
-        self.can_split = True
         self.text_font = pygame.font.Font(None, 32)
         self.game_over_text = []
 
-        # initial cards
+        # Initial cards, only used for the beginning of the games display
         self.player_card_1 = None
         self.player_card_2 = None
         self.dealer_card_1 = None
         self.dealer_card_2 = None
         self.dealer_hidden_card = None
 
-        # load button images
+        # Load button images
         self.hit_img = pygame.image.load('hit.png').convert_alpha()
         self.stand_img = pygame.image.load('stand.png').convert_alpha()
         self.double_img = pygame.image.load('double.png').convert_alpha()
-        self.split_img = pygame.image.load('split.png').convert_alpha()
         self.play_again_img = pygame.image.load('playagain.png').convert_alpha()
 
-        # load card extras images
+        # Load card extras images
         self.card_back_img = pygame.image.load('Graphics/card extras/card_back.png').convert_alpha()
         self.card_outline = pygame.image.load('Graphics/card extras/card_outline.png').convert_alpha()
-        self.cut_card = pygame.image.load('Graphics/card extras/cut_card.png').convert_alpha()
 
-        # load club images
+        # Load images for each suit and value
         self.club_card_2 = pygame.image.load('Graphics/clubs/card_clubs_02.png').convert_alpha()
         self.club_card_3 = pygame.image.load('Graphics/clubs/card_clubs_03.png').convert_alpha()
         self.club_card_4 = pygame.image.load('Graphics/clubs/card_clubs_04.png').convert_alpha()
@@ -122,8 +124,6 @@ class Blackjack:
         self.club_card_J = pygame.image.load('Graphics/clubs/card_clubs_J.png').convert_alpha()
         self.club_card_Q = pygame.image.load('Graphics/clubs/card_clubs_Q.png').convert_alpha()
         self.club_card_K = pygame.image.load('Graphics/clubs/card_clubs_K.png').convert_alpha()
-
-        # load diamond images
         self.diamond_card_2 = pygame.image.load('Graphics/diamonds/card_diamonds_02.png').convert_alpha()
         self.diamond_card_3 = pygame.image.load('Graphics/diamonds/card_diamonds_03.png').convert_alpha()
         self.diamond_card_4 = pygame.image.load('Graphics/diamonds/card_diamonds_04.png').convert_alpha()
@@ -137,8 +137,6 @@ class Blackjack:
         self.diamond_card_J = pygame.image.load('Graphics/diamonds/card_diamonds_J.png').convert_alpha()
         self.diamond_card_Q = pygame.image.load('Graphics/diamonds/card_diamonds_Q.png').convert_alpha()
         self.diamond_card_K = pygame.image.load('Graphics/diamonds/card_diamonds_K.png').convert_alpha()
-
-        # load heart images
         self.hearts_card_2 = pygame.image.load('Graphics/hearts/card_hearts_02.png').convert_alpha()
         self.hearts_card_3 = pygame.image.load('Graphics/hearts/card_hearts_03.png').convert_alpha()
         self.hearts_card_4 = pygame.image.load('Graphics/hearts/card_hearts_04.png').convert_alpha()
@@ -152,8 +150,6 @@ class Blackjack:
         self.hearts_card_J = pygame.image.load('Graphics/hearts/card_hearts_J.png').convert_alpha()
         self.hearts_card_Q = pygame.image.load('Graphics/hearts/card_hearts_Q.png').convert_alpha()
         self.hearts_card_K = pygame.image.load('Graphics/hearts/card_hearts_K.png').convert_alpha()
-
-        # load spade images
         self.spades_card_2 = pygame.image.load('Graphics/spades/card_spades_02.png').convert_alpha()
         self.spades_card_3 = pygame.image.load('Graphics/spades/card_spades_03.png').convert_alpha()
         self.spades_card_4 = pygame.image.load('Graphics/spades/card_spades_04.png').convert_alpha()
@@ -168,17 +164,17 @@ class Blackjack:
         self.spades_card_Q = pygame.image.load('Graphics/spades/card_spades_Q.png').convert_alpha()
         self.spades_card_K = pygame.image.load('Graphics/spades/card_spades_K.png').convert_alpha()
 
-        # create instances
-        self.hit_button = Button(83, 500, self.hit_img, 0.75)
-        self.stand_button = Button(243, 500, self.stand_img, 0.75)
-        self.double_button = Button(403, 500, self.double_img, 0.75)
-        self.split_button = Button(563, 500, self.split_img, 0.75)
-        self.play_again_button = Button(301, 550, self.play_again_img, 1)
+        # Create button objects
+        self.hit_button = Button(160, 500, self.hit_img, 0.75)
+        self.stand_button = Button(320, 500, self.stand_img, 0.75)
+        self.double_button = Button(480, 500, self.double_img, 0.75)
+        self.play_again_button = Button(298, 550, self.play_again_img, 1)
 
+        # Create table outline objects
         self.card_outline_table_1 = Outline(95, 250, self.card_outline, 0.75)
         self.card_outline_table_2 = Outline(95, 70, self.card_outline, 0.75)
 
-        # create dictionary for easy image access
+        # Dictionary for easy image access
         self.card_images = {
             "Clubs": {
                 "Ace": self.club_card_A,
@@ -239,134 +235,95 @@ class Blackjack:
                 "Jack": self.spades_card_J,
                 "Queen": self.spades_card_Q,
                 "King": self.spades_card_K
-            },
-            "None": {
-                "Cut Card": self.cut_card
             }
         }
 
+    """ Method called to display game result text on screen after the game ends. """
     def draw_text(self, text, font, text_col, x, y):
         img = font.render(text, True, (255, 255, 255))
         screen.blit(img, (x, y))
 
+    """ Method called to start the game. It will create and randomize the deck, then
+        call for the deal method. """
     def start(self):
+
+        # Ensure player and dealer have enough money to bet, then create deck and call deal
         if self.bet_amount <= self.player.balance and self.bet_amount <= self.dealer.balance:
             self.deck.create_deck()
             self.deck.shuffle_deck()
             self.deal()
 
-    # method used to get card images based on card value and suit from dict
+    """ Method used to get card images based on card value and suit from the dictionary. """
     def get_card(self, card):
         return self.card_images[card.suit][card.value]
 
-    """ Method used to deal first 2 cards to the dealer and player hands. """
-
+    """ Method will hit and intial two cards for dealer and player hands. It will then
+        calculate the ability for the dealer and player to be able to hit, as well as
+        their hand values. """
     def deal(self):
 
-        """ Draw 4 card objects from the deck and assign them individually to each of the 4 variables """
+        # Draw initial player and dealer cards from the deck
         card1 = self.deck.hit()
         card2 = self.deck.hit()
         card3 = self.deck.hit()
         card4 = self.deck.hit()
 
-        # Check that card exists, if it does add it to player hand and update hand value
-        if card1:
-            self.player.hand.hand.append(card1)
+        # Add cards to player respective hands
+        self.player.hand.hand.append(card1)
+        self.dealer.hand.hand.append(card2)
+        self.player.hand.hand.append(card3)
+        self.dealer.hand.hand.append(card4)
 
-        # Check that card exists, if it does add it to dealer hand and update hand value
-        if card2:
-            self.dealer.hand.hand.append(card2)
-
-        # Check that card exists, if it does add it to player hand and update hand value
-        if card3:
-            self.player.hand.hand.append(card3)
-
-        # Check that card exists, if it does add it to dealer hand and update hand value
-        if card4:
-            self.dealer.hand.hand.append(card4)
-
+        # Calculate player respective hand value and ability to hit
         self.player.hand.calc_hand_value()
         self.dealer.hand.calc_hand_value()
         self.player.hand.calc_ability_to_hit()
         self.dealer.hand.calc_ability_to_hit()
 
-        # display starting hands on the screen
+        # Display starting hand on the screen for the player
         image_for_player_first_card = self.get_card(self.player.hand.hand[0])
         image_for_player_second_card = self.get_card(self.player.hand.hand[1])
         self.player_card_1 = cardObject(108, 305, image_for_player_first_card, 2.5)
         self.player_card_2 = cardObject(178, 305, image_for_player_second_card, 2.5)
 
+        """ Display starting hand on screen for dealer. Will initially display a
+            backwards card for the dealers second card to hide it. The real second
+            card is still assigned to the correct variable for later display. """
         image_for_dealer_first_card = self.get_card(self.dealer.hand.hand[0])
         image_for_dealer_second_card = self.get_card(self.dealer.hand.hand[1])
         self.dealer_card_1 = cardObject(108, 80, image_for_dealer_first_card, 2.5)
         self.dealer_card_2 = cardObject(178, 80, image_for_dealer_second_card, 2.5)
         self.dealer_hidden_card = cardObject(178, 80, self.card_back_img, 2.5)
 
+    """ Method called after the game ends to determine the winner. """
     def determine_winner(self):
 
-        # hand 1 winner
-        if self.hand_count == 1:
-            if 21 >= self.player.hand.hand_value > self.dealer.hand.hand_value:
-                self.winner_one = self.player
-                self.player.balance += self.bet_amount
-                self.dealer.balance -= self.bet_amount
-            elif 21 >= self.dealer.hand.hand_value > self.player.hand.hand_value:
-                self.winner_one = self.dealer
-                self.player.balance -= self.bet_amount
-                self.dealer.balance += self.bet_amount
-            elif self.player.hand.hand_value > 21 >= self.dealer.hand.hand_value:
-                self.winner_one = self.dealer
-                self.player.balance -= self.bet_amount
-                self.dealer.balance += self.bet_amount
-            elif self.dealer.hand.hand_value > 21 >= self.player.hand.hand_value:
-                self.winner_one = self.player
-                self.player.balance += self.bet_amount
-                self.dealer.balance -= self.bet_amount
-            elif self.player.hand.hand_value == self.dealer.hand.hand_value:
-                self.winner_one = None
-        else:
+        # Check which case applies to the game state and assign results
+        if 21 >= self.player.hand.hand_value > self.dealer.hand.hand_value:
+            self.winner = self.player
+            self.player.balance += self.bet_amount
+            self.dealer.balance -= self.bet_amount
+        elif 21 >= self.dealer.hand.hand_value > self.player.hand.hand_value:
+            self.winner = self.dealer
+            self.player.balance -= self.bet_amount
+            self.dealer.balance += self.bet_amount
+        elif self.player.hand.hand_value > 21 >= self.dealer.hand.hand_value:
+            self.winner = self.dealer
+            self.player.balance -= self.bet_amount
+            self.dealer.balance += self.bet_amount
+        elif self.dealer.hand.hand_value > 21 >= self.player.hand.hand_value:
+            self.winner = self.player
+            self.player.balance += self.bet_amount
+            self.dealer.balance -= self.bet_amount
+        elif self.player.hand.hand_value == self.dealer.hand.hand_value:
+            self.winner = None
 
-            # first hand
-            if 21 >= self.player.hand.hand_value > self.dealer.hand.hand_value:
-                self.winner_one = self.player
-                self.player.balance += self.bet_amount
-                self.dealer.balance -= self.bet_amount
-            elif 21 >= self.dealer.hand.hand_value > self.player.hand.hand_value:
-                self.winner_one = self.dealer
-                self.player.balance -= self.bet_amount
-                self.dealer.balance += self.bet_amount
-            elif self.player.hand.hand_value > 21 >= self.dealer.hand.hand_value:
-                self.winner_one = self.dealer
-                self.player.balance -= self.bet_amount
-                self.dealer.balance += self.bet_amount
-            elif self.dealer.hand.hand_value > 21 >= self.player.hand.hand_value:
-                self.winner_one = self.player
-                self.player.balance += self.bet_amount
-                self.dealer.balance -= self.bet_amount
-            elif self.player.hand.hand_value == self.dealer.hand.hand_value:
-                self.winner_one = None
-
-            # second hand
-            if 21 >= self.split_hand.hand_value > self.dealer.hand.hand_value:
-                self.winner_two = self.player
-                self.player.balance += self.bet_amount
-                self.dealer.balance -= self.bet_amount
-            elif 21 >= self.dealer.hand.hand_value > self.split_hand.hand_value:
-                self.winner_two = self.dealer
-                self.player.balance -= self.bet_amount
-                self.dealer.balance += self.bet_amount
-            elif self.split_hand.hand_value > 21 >= self.dealer.hand.hand_value:
-                self.winner_two = self.dealer
-                self.player.balance -= self.bet_amount
-                self.dealer.balance += self.bet_amount
-            elif self.dealer.hand.hand_value > 21 >= self.split_hand.hand_value:
-                self.winner_two = self.player
-                self.player.balance += self.bet_amount
-                self.dealer.balance -= self.bet_amount
-            elif self.split_hand.hand_value == self.dealer.hand.hand_value:
-                self.winner_two = None
-
+    """ Method called to restart the game. This method can only be called after the
+        game is over. It will set the game variables back to their original state 
+        and then call the play game method to start another game. """
     def play_again(self):
+
+        # Clear all variables stored in respective lists
         while len(self.player.hand.hand) > 0:
             self.player.hand.hand.pop(-1)
         while len(self.dealer.hand.hand) > 0:
@@ -378,57 +335,77 @@ class Blackjack:
         while len(self.game_over_card_display) > 0:
             self.game_over_card_display.pop(-1)
 
+        # Set all variables back to original game state prior to start
         self.currently_player_turn = True
         self.currently_dealer_turn = False
-        self.split_hand = None
         self.pause_iterations_for_game_over = False
         self.game_over = False
-        self.winner_one = None
-        self.winner_two = None
+        self.winner = None
 
-        print(f'hand clear for play again {self.player.hand}')
-        print(f'hand clear for play again dealer {self.dealer.hand}')
-
+        # Call play game method to start another game
         self.play_game()
 
+    """ Method that handles the GUI display. It will have a while loop run non stop until
+        the play again method is called. It will actively display new cards and status
+        game information like hand value, winner, and more while running. """
     def play_game(self):
+
+        # Call start method to create deck and deal initial hands
         self.start()
 
-        print(f'player hand after play again {self.player.hand}, hand value {self.player.hand.hand_value}')
-        print(f'dealer hand after play again {self.dealer.hand}, hand value {self.dealer.hand.hand_value}')
-
+        # Variable to start and end while loop
         run = True
+
+        # Game loop, it will run until the play again method is called
         while run is True:
 
-            # set color of background
+            # Set color of background
             self.screen.fill((53, 101, 77))
 
+            # Display buttons and table outline on the screen
             self.hit_button.blit()
             self.stand_button.blit()
             self.double_button.blit()
-            self.split_button.blit()
             self.card_outline_table_1.draw()
             self.card_outline_table_2.draw()
 
-            # display initial hands for player and dealer
+            # Display initial cards for player and dealer
             self.dealer_card_1.draw()
-            self.dealer_hidden_card.draw()
             self.player_card_1.draw()
             self.player_card_2.draw()
 
+            """ This if statement will handle drawing the dealers second card. When
+                applicable, it will draw the desired card"""
+            if self.currently_dealer_turn or self.game_over:
+                self.dealer_card_2.draw()
+            else:
+                self.dealer_hidden_card.draw()
+
+            """ This for loop will draw the players cards onto the screen. Because
+                this is a never ending while loop, the cards need to be redrawn
+                every iteration. """
             for player_card in self.cards_added_during_player_turn:
                 player_card.draw()
 
-            if self.currently_dealer_turn or self.game_over:
-                self.dealer_card_2.draw()
-
+            """ Used to undo the reversing of the dealers cards after each iteration. 
+                When you hit, you add to the end of a list. This will ensure cards
+                are drawn in the correct order. """
             self.cards_added_during_dealer_turn.reverse()
+
+            """ This for loop will draw the dealers cards onto the screen. Because
+                this is a never ending while loop, the cards need to be redrawn
+                every iteration. """
             for dealer_card in self.cards_added_during_dealer_turn:
                 dealer_card.draw()
 
+            # Portion of code that will handle the players turn
             if self.currently_player_turn:
                 if self.player.hand.allowed_to_hit:
+
+                    # Check if the hit button was clicked
                     if self.hit_button.draw():
+
+                        # Get the new card and set its display location
                         self.player.hit(self.deck)
                         new_card = self.get_card(self.player.hand.hand[-1])
                         if len(self.player.hand.hand) == 3:
@@ -441,74 +418,39 @@ class Blackjack:
                             display = cardObject(458, 305, new_card, 2.5)
                         else:
                             display = cardObject(528, 305, new_card, 2.5)
+
+                        """ Add display card to players turn list. This is so
+                            that the card displays during all iterations. """
                         self.cards_added_during_player_turn.append(display)
+
+                    # Check if the stand button was clicked
                     elif self.stand_button.draw():
+
+                        # Set ability to hit to false and allow dealer to play
                         self.player.stand()
+
+                    # Check if the double button was clicked
                     elif self.double_button.draw():
+
+                        # Get new player card and set its display location
                         self.player.double(self.deck)
                         new_card = self.get_card(self.player.hand.hand[-1])
                         display = cardObject(248, 305, new_card, 2.5)
                         self.cards_added_during_player_turn.append(display)
-                    elif self.split_button.draw() and self.can_split:
-                        if self.player.hand.hand[0].value == self.player.hand.hand[1].value:
-                            self.split_hand = self.player.split(self.deck)
-                            self.player.hit(self.deck)
 
-                            # display logic for original player hand
-                            new_card = self.get_card(self.player.hand.hand[-1])
-                            display = cardObject(178, 305, new_card, 2.5)
-                            self.cards_added_during_player_turn.append(display)
+            """ This if statement will change the current player to the dealer when
+                a player can no longer play and the game is not over. """
+            if (self.currently_player_turn and not self.player.hand.allowed_to_hit
+                    and not self.pause_iterations_for_game_over):
+                self.currently_player_turn = False
+                self.currently_dealer_turn = True
 
-                            print(f'{self.split_hand}')
-                            # display logic for new hand
-                            new_hand_first_card = self.get_card(self.split_hand.hand[0])
-                            second_hand_new_card = self.get_card(self.split_hand.hand[-1])
-                            display_hand_two_first_card = cardObject(388, 305, new_hand_first_card, 2.5)
-                            display_hand_two = cardObject(458, 305, second_hand_new_card, 2.5)
-                            self.cards_added_during_player_turn.append(display_hand_two_first_card)
-                            self.cards_added_during_player_turn.append(display_hand_two)
-                            self.can_split = False
-                            self.split_hand.allowed_to_hit = True
-                            self.hand_count += 1
-
-                if self.split_hand is not None:
-                    if self.split_hand.allowed_to_hit is True:
-                        if self.hit_button.draw():
-                            self.split_hand.hit(self.deck)
-                            new_card = self.get_card(self.split_hand.hand[-1])
-                            if len(self.split_hand.hand) == 3:
-                                display = cardObject(528, 305, new_card, 2.5)
-                            self.cards_added_during_player_turn.append(display)
-                        elif self.stand_button.draw():
-                            self.split_hand.stand()
-                        elif self.double_button.draw():
-                            self.split_hand.double(self.deck)
-                            new_card = self.get_card(self.split_hand.hand[-1])
-                            display = cardObject(528, 305, new_card, 2.5)
-                            self.cards_added_during_player_turn.append(display)
-
-            if self.split_hand is None:
-                if (self.currently_player_turn and not self.player.hand.allowed_to_hit
-                        and not self.pause_iterations_for_game_over):
-                    self.currently_player_turn = False
-                    self.currently_dealer_turn = True
-            elif self.split_hand is not None:
-                if (self.currently_player_turn and not self.player.hand.allowed_to_hit
-                        and self.split_hand.allowed_to_split and not
-                        self.pause_iterations_for_game_over):
-                    self.currently_player_turn = True
-                    self.currently_dealer_turn = False
-                elif (self.currently_player_turn and not self.player.hand.allowed_to_hit
-                        and not self.split_hand.allowed_to_hit and not
-                        self.pause_iterations_for_game_over):
-                    self.currently_player_turn = False
-                    self.currently_dealer_turn = True
-
+            # Portion of code that will handle the dealers turn
             if self.currently_dealer_turn:
                 if self.dealer.hand.allowed_to_hit:
-                    self.dealer.play(self.deck)
 
-                    # update display of card 2 in player hand
+                    # Get the new card and set its display location
+                    self.dealer.play(self.deck)
                     new_card = self.get_card(self.dealer.hand.hand[-1])
                     if len(self.dealer.hand.hand) == 3:
                         display = cardObject(248, 80, new_card, 2.5)
@@ -520,55 +462,27 @@ class Blackjack:
                         display = cardObject(458, 80, new_card, 2.5)
                     else:
                         display = cardObject(528, 80, new_card, 2.5)
+
+                    """ Add display card to dealers turn list. This is so
+                        that the card displays during all iterations. """
                     self.cards_added_during_dealer_turn.append(display)
 
-            # reverse dealer cards back from previous reverse so it is in correct added order
-            self.cards_added_during_dealer_turn.reverse()
-
+            """ This if statement will change the the dealers hand to false, game over
+                to true, and pause game for iterations to true. This is because the
+                dealer has completed its turn so now the game over logic will be called.
+                By setting pause for iterations to true, we are ensuring display stays
+                the same. """
             if self.dealer.hand.allowed_to_hit is False:
                 if self.currently_dealer_turn is True:
                     self.currently_dealer_turn = False
                     self.game_over = True
                     self.pause_iterations_for_game_over = True
 
-            if self.game_over:
-                self.determine_winner()
-                if self.hand_count == 1:
-                    if self.winner_one == self.player:
-                        self.draw_text("Player Wins!", self.text_font, (0, 0, 0), 335, 263)
-                    elif self.winner_one == self.dealer:
-                        self.draw_text("Dealer Wins!", self.text_font, (0, 0, 0), 335, 263)
-                    else:
-                        self.draw_text("Push!", self.text_font, (0, 0, 0), 370, 263)
-                else:
-                    if self.winner_one == self.player and self.winner_two == self.player:
-                        self.draw_text("Player Wins Both Hands!", self.text_font, (0, 0, 0), 335, 263)
-                    elif self.winner_one == self.dealer and self.winner_two == self.dealer:
-                        self.draw_text("Dealer Wins Both Hands!", self.text_font, (0, 0, 0), 335, 263)
-                    elif self.winner_one == self.player and self.winner_two == self.dealer:
-                        self.draw_text("Player Wins Hand 1, Dealer Wins Hand 2!", self.text_font, (0, 0, 0), 370, 263)
-                    elif self.winner_one == self.dealer and self.winner_two == self.player:
-                        self.draw_text("Dealer Wins Hand 1, Player Wins Hand 2!", self.text_font, (0, 0, 0), 370, 263)
-                    elif self.winner_one == self.player and self.winner_two == None:
-                        self.draw_text("Player Wins Hand 1, Push Hand 2!", self.text_font, (0, 0, 0), 370, 263)
-                    elif self.winner_one == self.dealer and self.winner_two == None:
-                        self.draw_text("Dealer Wins Hand 1, Push Hand 2!", self.text_font, (0, 0, 0), 370, 263)
-                    elif self.winner_one == None and self.winner_two == self.player:
-                        self.draw_text("Push Hand 1, Player Wins Hand 2!", self.text_font, (0, 0, 0), 370, 263)
-                    elif self.winner_one == None and self.winner_two == self.dealer:
-                        self.draw_text("Push Hand 1, Dealer Wins Hand 2!", self.text_font, (0, 0, 0), 370, 263)
-                    else:
-                        self.draw_text("Push Both Hands", self.text_font, (0, 0, 0), 370, 263)
+            # Display player hand value on the screen
+            self.draw_text(f'{self.player.hand.hand_value}', self.text_font, (0, 0, 0), 110, 263)
 
-            # display hand values on the screen
-            if self.split_hand is None:
-                self.draw_text(f'{self.player.hand.hand_value}', self.text_font, (0, 0, 0), 110, 263)
-            else:
-                self.draw_text(f'{self.player.hand.hand_value}', self.text_font, (0, 0, 0), 110, 263)
-                self.draw_text(f'{self.split_hand.hand_value}', self.text_font, (0, 0, 0), 70, 263)
-
+            # Display dealer hand value on the screen
             if len(self.dealer.hand.hand) == 2:
-                value = 0
                 if (self.dealer.hand.hand[0].value == "Jack" or self.dealer.hand.hand[0].value == "Queen"
                         or self.dealer.hand.hand[0].value == "King"):
                     value = 10
@@ -580,23 +494,33 @@ class Blackjack:
             else:
                 self.draw_text(f'{self.dealer.hand.hand_value}', self.text_font, (0, 0, 0), 660, 263)
 
+            """ Reverse the order of the dealers cards in hand. This will ensure cards
+                are drawn in the correct order. """
+            self.cards_added_during_dealer_turn.reverse()
+
+            # If statement that will assign the display text based on the game results
             if self.game_over:
+
+                # Method called to determine winner
+                self.determine_winner()
+                if self.winner == self.player:
+                    self.draw_text("Player Wins!", self.text_font, (0, 0, 0), 335, 263)
+                elif self.winner == self.dealer:
+                    self.draw_text("Dealer Wins!", self.text_font, (0, 0, 0), 335, 263)
+                else:
+                    self.draw_text("Push!", self.text_font, (0, 0, 0), 370, 263)
+
+                # Draw play again button onto the screen
                 self.play_again_button.blit()
+
+                # Check if play again button is clicked
                 if self.play_again_button.draw():
-                    print(" ")
-                    print(" ")
-                    print(" ")
-                    print("--------------------------------------------------------")
-                    print("--------------------------------------------------------")
-                    print("--------------------- PLAY AGAIN -----------------------")
-                    print("--------------------------------------------------------")
-                    print("--------------------------------------------------------")
-                    print(" ")
-                    print(" ")
-                    print(" ")
+
+                    # Temporary stop the loop and call the play again method
                     run = False
                     self.play_again()
 
+            # Update screen display after each iteration
             pygame.display.update()
 
             """ EVENT HANDLER """

@@ -53,7 +53,7 @@ class Hand:
         hand_value = 0
         temp_card_value = None
 
-        """ This portion of code calculates the new hand value if a hand has more than one ace"""
+        """ This portion of code calculates the new hand value if a hand has more than one ace. """
         if iterations == 0 and len(self.hand) > 2 and aces_count == 1 and new_hand_value > 21:
             for card in self.hand:
                 if card.value == "Jack" or card.value == "Queen" or card.value == "King":
@@ -75,7 +75,7 @@ class Hand:
             iterations += 1
 
         """ Only 1 ace in your hand will ever be 11. This portion of code will handle
-            re evaluting your hand value if you hit and go over 21 while sitll having
+            re evaluating your hand value if you hit and go over 21 while still having
             an ace with the value of 11. """
         already_counted_aces = 0
         if aces_count >= 2 and new_hand_value > 21:
@@ -104,7 +104,7 @@ class Hand:
             else:
                 temp_hand_value += int(card.value)
 
-        # Assign ability to hit based on cards in hand and hand value
+        # Assign ability to hit based on cards in hand value
         if aces_count == 1 and self.hand_value <= 21 and len(self.hand) > 2:
             self.allowed_to_hit = True
         elif aces_count == 1 and self.hand_value == 21 and len(self.hand) == 2:
@@ -124,45 +124,3 @@ class Hand:
             self.allowed_to_hit = True
         else:
             self.allowed_to_hit = False
-
-    """ Logic for when you create another hand. Cannot access action in player class
-        since hand is a hand ovject not a player"""
-    def hit(self, deck):
-
-        # If hand value is at least 17, check if player is still allowed to hit
-        if self.allowed_to_hit is True:
-
-            # Assign variable card to the top card returned from Deck class hit method
-            card = deck.hit()
-            self.already_hit = True
-            self.hand.append(card)    # Call hand method
-
-        self.calc_hand_value()    # Call hand method
-        self.calc_ability_to_hit()
-
-        return self.hand
-
-    """  Method that handles cases when a player decides to stand. It will update the variable
-         allowed_to_hit to false because after standing a player is no longer allowed to hit. """
-    def stand(self):
-        self.allowed_to_hit = False
-        return self.hand
-
-    """ Method that handles cases when a player decides to double. It will first check that the
-        player is allowed to double under given circumstances and update the players hand and 
-        value. """
-    def double(self, deck):
-
-        if self.already_hit is False:
-
-            # If hand value is atleast 17, check if player is still allowed to hit
-            if self.allowed_to_hit is True:
-
-                # Assign variable card to the top card returned from Deck class hit method
-                card = deck.hit()
-                self.hand.append(card)
-
-        self.allowed_to_hit = False
-        self.calc_hand_value()
-
-        return self.hand

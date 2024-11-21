@@ -58,12 +58,12 @@ class Player:
 
                 # Assign variable card to the top card returned from Deck class hit method
                 card = deck.hit()
-                self.hand.hand.append(card)    # Call hand method
+                self.hand.hand.append(card)
 
-        # Manually assign hand ability to hit, you can not hit after doubling
-        self.hand.already_hit = True
-        self.hand.allowed_to_hit = False
-        self.hand.calc_hand_value()
+                # Manually assign hand ability to hit, you can not hit after doubling
+                self.hand.already_hit = True
+                self.hand.allowed_to_hit = False
+                self.hand.calc_hand_value()
 
         return self.hand
 
