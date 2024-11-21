@@ -12,10 +12,7 @@ class Hand:
         # Boolean variable to update if a player can still hit or not
         self.allowed_to_hit = True
 
-        # Boolean variable to update if a player can still split or not
-        self.allowed_to_split = False
-
-        # boolean to track doubling
+        # Boolean to track ability to double
         self.already_hit = False
 
     """ Method internally called by print message to represent list of cards. // chatgpt """
@@ -41,28 +38,13 @@ class Hand:
                     new_hand_value += 1
                 elif aces_count == 1:
                     new_hand_value += 11
-            elif card.value == "1":
-                new_hand_value += 1
-            elif card.value == "2":
-                new_hand_value += 2
-            elif card.value == "3":
-                new_hand_value += 3
-            elif card.value == "4":
-                new_hand_value += 4
-            elif card.value == "5":
-                new_hand_value += 5
-            elif card.value == "6":
-                new_hand_value += 6
-            elif card.value == "7":
-                new_hand_value += 7
-            elif card.value == "8":
-                new_hand_value += 8
-            elif card.value == "9":
-                new_hand_value += 9
             elif (card.value == "10" or card.value == "Jack" or card.value == "Queen"
                   or card.value == "King"):
                 new_hand_value += 10
+            else:
+                new_hand_value += int(card.value)
 
+        # Assign new hand value to calculated hand value
         self.hand_value = new_hand_value
 
         """ Handling multiple aces new hand value (specifically this part of code will be
@@ -71,6 +53,7 @@ class Hand:
         hand_value = 0
         temp_card_value = None
 
+        """ This portion of code calculates the new hand value if a hand has more than one ace"""
         if iterations == 0 and len(self.hand) > 2 and aces_count == 1 and new_hand_value > 21:
             for card in self.hand:
                 if card.value == "Jack" or card.value == "Queen" or card.value == "King":
@@ -84,10 +67,11 @@ class Hand:
 
                 temp_card_value = None
 
-            total = self.hand_value - hand_value
+            # Check to see if you need to change ace value to 1 from 11
             if (self.hand_value - hand_value) == 11:
                 new_hand_value -= 10
 
+            # Variable to update, prevents portion from happening more than once
             iterations += 1
 
         """ Only 1 ace in your hand will ever be 11. This portion of code will handle
@@ -101,18 +85,16 @@ class Hand:
                 if card.value == "Ace" and already_counted_aces == 1 and new_hand_value > 21:
                     new_hand_value -= 10
 
-        if len(self.hand) == 2:
-            if self.hand[0].value == self.hand[1].value:
-                self.allowed_to_split = True
-
         # assign temporary hand value to the self.hand_value variable for global use
-
         self.hand_value = new_hand_value
 
+    """ This method determines if a player is able to hit or not, and updates the 
+        allowed to hit variable accordingly. """
     def calc_ability_to_hit(self):
         aces_count = 0
         temp_hand_value = 0
 
+        # Calculate hand value
         for card in self.hand:
             if card.value == "Ace":
                 aces_count += 1
@@ -122,6 +104,7 @@ class Hand:
             else:
                 temp_hand_value += int(card.value)
 
+        # Assign ability to hit based on cards in hand and hand value
         if aces_count == 1 and self.hand_value <= 21 and len(self.hand) > 2:
             self.allowed_to_hit = True
         elif aces_count == 1 and self.hand_value == 21 and len(self.hand) == 2:
@@ -146,40 +129,16 @@ class Hand:
         since hand is a hand ovject not a player"""
     def hit(self, deck):
 
-        # Check if players current hand value is at least 17
-        if self.hand_value >= 17:
-
-            # If hand value is at least 17, check if player is still allowed to hit
-            if self.allowed_to_hit is True:
-
-                # Assign variable card to the top card returned from Deck class hit method
-                card = deck.hit()
-                self.already_hit = True
-
-                # Check if deck isn't empty
-                if card:
-                    self.hand.append(card)    # Call hand method
-                    self.calc_hand_value()    # Call hand method
-
-                """ Check if hand value is now 17 or greater after hitting. If it is,
-                    then update allowed_to_hit variable to false since you can no longer hit. """
-                if self.hand_value >= 17:
-                    self.allowed_to_hit = False
-        else:
+        # If hand value is at least 17, check if player is still allowed to hit
+        if self.allowed_to_hit is True:
 
             # Assign variable card to the top card returned from Deck class hit method
             card = deck.hit()
             self.already_hit = True
+            self.hand.append(card)    # Call hand method
 
-            # Check if deck isn't empty
-            if card:
-                self.hand.append(card)  # Call hand method
-                self.calc_hand_value()  # Call hand method
-
-            """ Check if hand value is now 17 or greater after hitting. If it is,
-                then update allowed_to_hit variable to false since you can no longer hit. """
-            if self.hand_value >= 17:
-                self.allowed_to_hit = False
+        self.calc_hand_value()    # Call hand method
+        self.calc_ability_to_hit()
 
         return self.hand
 
@@ -201,10 +160,9 @@ class Hand:
 
                 # Assign variable card to the top card returned from Deck class hit method
                 card = deck.hit()
-                self.hand.append(card)    # Call hand method
-                self.allowed_to_hit = False
-                self.calc_hand_value()    # Call hand method
+                self.hand.append(card)
 
-            self.allowed_to_split = False
+        self.allowed_to_hit = False
+        self.calc_hand_value()
 
         return self.hand
