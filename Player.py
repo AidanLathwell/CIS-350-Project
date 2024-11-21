@@ -46,8 +46,33 @@ class Player:
 
                 """ Check if hand value is now 17 or greater after hitting. If it is,
                     then update allowed_to_hit variable to false since you can no longer hit. """
-                if self.hand.hand_value >= 17:
+                aces_count = 0
+                other_cards = []
+                other_card_value_total = 0
+                for card in self.hand.hand:
+                    if card.value == "Ace":
+                        aces_count += 1
+                    elif card.value == "Cut Card":
+                        cut_list.append(card)
+                    elif card.value != "Ace":
+                        other_cards.append(card)
+                        if card.value == "Jack" or card.value == "Queen" or card.value == "King":
+                            other_card_value_total += 10
+                        else:
+                            other_card_value_total += int(card.value)
+
+                if (aces_count == 1 and len(self.hand.hand) == 2 and
+                        self.hand.hand_value == 21):
                     self.hand.allowed_to_hit = False
+                elif aces_count == 1 and self.hand.hand_value < 21:
+                    self.hand.allowed_to_hit = True
+                elif aces_count > 1 and other_card_value_total + (1 * aces_count) < 21:
+                    self.hand.allowed_to_hit = True
+                elif self.hand.hand_value >= 17:
+                    self.hand.allowed_to_hit = False
+                else:
+                    self.hand.allowed_to_hit = True
+
         else:
 
             # Assign variable card to the top card returned from Deck class hit method
@@ -61,8 +86,35 @@ class Player:
 
             """ Check if hand value is now 17 or greater after hitting. If it is,
                 then update allowed_to_hit variable to false since you can no longer hit. """
-            if self.hand.hand_value >= 17:
+            aces_count = 0
+            other_cards = []
+            other_card_value_total = 0
+            for card in self.hand.hand:
+                if card.value == "Ace":
+                    aces_count += 1
+                elif card.value == "Cut Card":
+                    cut_list.append(card)
+                elif card.value != "Ace":
+                    other_cards.append(card)
+                    if card.value == "Jack" or card.value == "Queen" or card.value == "King":
+                        other_card_value_total += 10
+                    else:
+                        other_card_value_total += int(card.value)
+
+            if (aces_count == 1 and len(self.hand.hand) == 2 and
+                    self.hand.hand_value == 21):
                 self.hand.allowed_to_hit = False
+            elif aces_count == 1 and self.hand.hand_value < 21:
+                self.hand.allowed_to_hit = True
+            elif aces_count > 1 and other_card_value_total + (1 * aces_count) < 21:
+                self.hand.allowed_to_hit = True
+            elif self.hand.hand_value >= 17:
+                self.hand.allowed_to_hit = False
+            else:
+                self.hand.allowed_to_hit = True
+
+        self.already_hit = True
+        self.hand.allowed_to_split = False
 
         return self.hand
 
@@ -70,6 +122,8 @@ class Player:
          allowed_to_hit to false because after standing a player is no longer allowed to hit. """
     def stand(self):
         self.hand.allowed_to_hit = False
+        self.hand.allowed_to_split = False
+        self.already_hit = True
         return self.hand
 
     """ Method that handles cases when a player decides to double. It will first check that the
@@ -78,20 +132,18 @@ class Player:
     def double(self, deck):
 
         if self.already_hit is False:
-            # Check if players current hand value is at least 17
-            if self.hand.hand_value <= 17:
 
-                # If hand value is atleast 17, check if player is still allowed to hit
-                if self.hand.allowed_to_hit is True:
+            # If hand value is atleast 17, check if player is still allowed to hit
+            if self.hand.allowed_to_hit is True:
 
-                    # Assign variable card to the top card returned from Deck class hit method
-                    card = deck.hit()
-                    self.already_hit = True
-                    self.hand.hand.append(card)    # Call hand method
-                    self.hand.allowed_to_hit = False
-                    self.hand.calc_hand_value()    # Call hand method
-        else:
-            print("Server: You have already hit, you can not double.")
+                # Assign variable card to the top card returned from Deck class hit method
+                card = deck.hit()
+                self.already_hit = True
+                self.hand.hand.append(card)    # Call hand method
+                self.hand.allowed_to_hit = False
+                self.hand.calc_hand_value()    # Call hand method
+
+        self.hand.allowed_to_split = False
 
         return self.hand
 
@@ -110,14 +162,38 @@ class Player:
                 new_hand.hand.append(card_for_hand)
                 new_hand.calc_hand_value()
 
-            if new_hand.hand_value >= 17:
-                new_hand.allowed_to_hit = False
+            """ Check if hand value is now 17 or greater after hitting. If it is,
+                then update allowed_to_hit variable to false since you can no longer hit. """
+            aces_count = 0
+            other_cards = []
+            other_card_value_total = 0
+            for card in new_hand.hand:
+                if card.value == "Ace":
+                    aces_count += 1
+                elif card.value == "Cut Card":
+                    cut_list.append(card)
+                elif card.value != "Ace":
+                    other_cards.append(card)
+                    if card.value == "Jack" or card.value == "Queen" or card.value == "King":
+                        other_card_value_total += 10
+                    else:
+                        other_card_value_total += int(card.value)
 
-        else:
-            print("Server: Cannot split without identical cards.")
+            if (aces_count == 1 and len(new_hand.hand) == 2 and
+                    new_hand.hand_value == 21):
+                new_hand.allowed_to_hit = False
+            elif aces_count == 1 and self.hand.hand_value < 21:
+                new_hand.allowed_to_hit = True
+            elif aces_count > 1 and other_card_value_total + (1 * aces_count) < 21:
+                new_hand.allowed_to_hit = True
+            elif new_hand.hand_value >= 17:
+                new_hand.allowed_to_hit = False
+            else:
+                new_hand.allowed_to_hit = True
+
+        self.hand.allowed_to_split = False
 
         return new_hand
-
 
     """ Method that returns a boolean value based on if the players hand busted or not. """
     def check_bust(self):

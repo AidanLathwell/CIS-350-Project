@@ -8,20 +8,14 @@ class Blackjack:
         # Deck class variable object, contains the deck list and deck class functionality
         self.deck = Deck()
 
-        # String variable taken as input for players name (for player class)
-        name = str(input("Enter player name: "))
-
-        # Integer variable taken as input for players balance (for player class)
-        balance = int(input("Enter wallet balance(int): "))
-
         # Player class variable object, contains the hand list and hand class functionality
-        self.player = Player(name, balance)
+        self.player = Player("Player", 1000)
 
         # Dealer class variable object, contains the hand lsit and hand class functionality
         self.dealer = Dealer()
 
         # Int variable to track the current wager amount of a hand/round
-        self.bet_amount = 0
+        self.bet_amount = 10
 
         # Boolean variable to be updated based upon the winner of a round
         self.winner = None
@@ -38,7 +32,6 @@ class Blackjack:
 
     """ Method used to start the blackjack game, it will call all other methods to run the game. """
     def start(self):
-        self.bet_amount = int(input("Enter wager amount: "))
         while (self.bet_amount > self.player.balance or self.bet_amount > self.dealer.balance
                 or self.bet_amount <=0):
             self.bet_amount = int(input("Server: Wagers cannot exceed your wallet or be less than 0.\n"

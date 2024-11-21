@@ -1,15 +1,15 @@
 import pygame
 from Card import Card
+from Dealer import Dealer
+from Card import Card
+from Hand import Hand
+from Player import Player
 
 pygame.init()
 
 """ CREATE WINDOW """
-# variables to assign the screen size dimensions
-screen_width = 800
-screen_height = 600
-
 # create the window with the input dimensions
-screen = pygame.display.set_mode((screen_width, screen_height))
+screen = pygame.display.set_mode((800, 600))
 
 # load button images
 hit_img = pygame.image.load('hit.png').convert_alpha()
@@ -146,7 +146,7 @@ card_outline_table_1 = Outline(95, 250, card_outline, 0.75)
 card_outline_table_2 = Outline(95, 70, card_outline, 0.75)
 
 # CARD PLACEMENTS FOR PLAYER HANDS
-test_card = cardObject(108, 305, club_card_2, 2.5)
+# test_card = cardObject(108, 305, club_card_2, 2.5)
 # test_card_2 = cardObject(178, 305, club_card_2, 2.5)
 # test_card_3 = cardObject(248, 305, club_card_2, 2.5)
 # test_card_4 = cardObject(318, 305, club_card_2, 2.5)
@@ -163,7 +163,6 @@ test_card = cardObject(108, 305, club_card_2, 2.5)
 # test_card_6 = cardObject(458, 80, club_card_2, 2.5)
 # test_card_7 = cardObject(528, 80, club_card_2, 2.5)
 
-""" CREATE GAME LOOP """
 run = True
 while run is True:
 

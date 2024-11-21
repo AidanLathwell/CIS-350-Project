@@ -8,7 +8,7 @@ class Dealer:
         self.hand = Hand()
 
         # Int variable to keep track of casinos balance after games played
-        self.balance = 50000000
+        self.balance = 500000000
 
     """ Method internally called by print message to represent list of cards. """
     def __str__(self):
@@ -69,8 +69,31 @@ class Dealer:
 
                 """ Check if hand value is now 17 or greater after hitting. If it is,
                     then update allowed_to_hit variable to false since you can no longer hit. """
-                if self.hand.hand_value >= 17:
+                aces_count = 0
+                other_cards = []
+                other_card_value_total = 0
+                for card in self.hand.hand:
+                    if card.value == "Ace":
+                        aces_count += 1
+                    elif card.value != "Ace":
+                        other_cards.append(card)
+                        if card.value == "Jack" or card.value == "Queen" or card.value == "King":
+                            other_card_value_total += 10
+                        else:
+                            other_card_value_total += int(card.value)
+
+                if (aces_count == 1 and len(self.hand.hand) == 2 and
+                        self.hand.hand_value == 21):
                     self.hand.allowed_to_hit = False
+                elif aces_count == 1 and self.hand.hand_value < 21:
+                    self.hand.allowed_to_hit = True
+                elif aces_count > 1 and other_card_value_total + (1 * aces_count) < 21:
+                    self.hand.allowed_to_hit = True
+                elif self.hand.hand_value >= 17:
+                    self.hand.allowed_to_hit = False
+                else:
+                    self.hand.allowed_to_hit = True
+
         else:
 
             # Assign variable card to the top card returned from Deck class hit method
@@ -83,8 +106,33 @@ class Dealer:
 
             """ Check if hand value is now 17 or greater after hitting. If it is,
                 then update allowed_to_hit variable to false since you can no longer hit. """
-            if self.hand.hand_value >= 17:
+            aces_count = 0
+            other_cards = []
+            cut_list = []
+            other_card_value_total = 0
+            for card in self.hand.hand:
+                if card.value == "Ace":
+                    aces_count += 1
+                elif card.value == "Cut Card":
+                    cut_list.append(card)
+                elif card.value != "Ace":
+                    other_cards.append(card)
+                    if card.value == "Jack" or card.value == "Queen" or card.value == "King":
+                        other_card_value_total += 10
+                    else:
+                        other_card_value_total += int(card.value)
+
+            if (aces_count == 1 and len(self.hand.hand) == 2 and
+                    self.hand.hand_value == 21):
                 self.hand.allowed_to_hit = False
+            elif aces_count == 1 and self.hand.hand_value < 21:
+                self.hand.allowed_to_hit = True
+            elif aces_count > 1 and other_card_value_total + (1 * aces_count) < 21:
+                self.hand.allowed_to_hit = True
+            elif self.hand.hand_value >= 17:
+                self.hand.allowed_to_hit = False
+            else:
+                self.hand.allowed_to_hit = True
 
         return self.hand
 
