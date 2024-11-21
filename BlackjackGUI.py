@@ -272,48 +272,23 @@ class Blackjack:
         # Check that card exists, if it does add it to player hand and update hand value
         if card1:
             self.player.hand.hand.append(card1)
-        self.player.hand.calc_hand_value()
 
         # Check that card exists, if it does add it to dealer hand and update hand value
         if card2:
             self.dealer.hand.hand.append(card2)
-        self.dealer.hand.calc_hand_value()
 
         # Check that card exists, if it does add it to player hand and update hand value
         if card3:
             self.player.hand.hand.append(card3)
-        self.player.hand.calc_hand_value()
 
         # Check that card exists, if it does add it to dealer hand and update hand value
         if card4:
             self.dealer.hand.hand.append(card4)
+
+        self.player.hand.calc_hand_value()
         self.dealer.hand.calc_hand_value()
-
-        """ This chunk of statements will determine if the player is allowed to hit based
-            off of their first 2 cards dealt and updates the respective boolean variables. """
-        if self.player.hand.hand_value >= 17:
-            aces_count = 0
-            for card in self.player.hand.hand:
-                if card.value == "Ace":
-                    aces_count += 1
-                    self.player.hand.allowed_to_hit = True
-                if aces_count == 0:
-                    self.player.hand.allowed_to_hit = False
-                elif aces_count == 1 and self.player.hand.hand_value == 21:
-                    self.player.hand.allowed_to_hit = False
-
-        """ This chunk of statements will determine if the dealer is allowed to hit based
-            off of their first 2 cards dealt and updates the respective boolean variables. """
-        if self.dealer.hand.hand_value >= 17:
-            aces_count = 0
-            for card in self.dealer.hand.hand:
-                if card.value == "Ace":
-                    aces_count += 1
-                    self.dealer.hand.allowed_to_hit = True
-                if aces_count == 0:
-                    self.dealer.hand.allowed_to_hit = False
-                elif aces_count == 1 and self.dealer.hand.hand_value == 21:
-                    self.dealer.hand.allowed_to_hit = False
+        self.player.hand.calc_ability_to_hit()
+        self.dealer.hand.calc_ability_to_hit()
 
         # display starting hands on the screen
         image_for_player_first_card = self.get_card(self.player.hand.hand[0])
@@ -411,19 +386,19 @@ class Blackjack:
         self.winner_one = None
         self.winner_two = None
 
-        print(self.player.hand)
-        print(self.dealer.hand)
+        print(f'hand clear for play again {self.player.hand}')
+        print(f'hand clear for play again dealer {self.dealer.hand}')
 
         self.play_game()
 
     def play_game(self):
         self.start()
+
+        print(f'player hand after play again {self.player.hand}, hand value {self.player.hand.hand_value}')
+        print(f'dealer hand after play again {self.dealer.hand}, hand value {self.dealer.hand.hand_value}')
+
         run = True
         while run is True:
-            print(f'game over:{self.game_over}')
-            print(f'player turn: {self.currently_player_turn}, can hit: {self.player.hand.allowed_to_hit}')
-            print(f'dealer turn: {self.currently_dealer_turn} can hit: {self.dealer.hand.allowed_to_hit}')
-            print(f'pause for iterations: {self.pause_iterations_for_game_over}')
 
             # set color of background
             self.screen.fill((53, 101, 77))
@@ -484,6 +459,7 @@ class Blackjack:
                             display = cardObject(178, 305, new_card, 2.5)
                             self.cards_added_during_player_turn.append(display)
 
+                            print(f'{self.split_hand}')
                             # display logic for new hand
                             new_hand_first_card = self.get_card(self.split_hand.hand[0])
                             second_hand_new_card = self.get_card(self.split_hand.hand[-1])
@@ -511,21 +487,22 @@ class Blackjack:
                             display = cardObject(528, 305, new_card, 2.5)
                             self.cards_added_during_player_turn.append(display)
 
-            if self.split_hand is not None:
-                if (self.player.hand.allowed_to_hit is False and
-                        self.pause_iterations_for_game_over is False and
-                        self.split_hand.allowed_to_hit is False):
+            if self.split_hand is None:
+                if (self.currently_player_turn and not self.player.hand.allowed_to_hit
+                        and not self.pause_iterations_for_game_over):
                     self.currently_player_turn = False
                     self.currently_dealer_turn = True
-            elif self.split_hand is None:
-                if (self.player.hand.allowed_to_hit is False and
-                        self.pause_iterations_for_game_over is False):
-                    self.currently_player_turn = False
-                    self.currently_dealer_turn = True
-                elif (self.player.hand.allowed_to_hit is False and
-                        self.pause_iterations_for_game_over is True):
-                    self.currently_player_turn = False
+            elif self.split_hand is not None:
+                if (self.currently_player_turn and not self.player.hand.allowed_to_hit
+                        and self.split_hand.allowed_to_split and not
+                        self.pause_iterations_for_game_over):
+                    self.currently_player_turn = True
                     self.currently_dealer_turn = False
+                elif (self.currently_player_turn and not self.player.hand.allowed_to_hit
+                        and not self.split_hand.allowed_to_hit and not
+                        self.pause_iterations_for_game_over):
+                    self.currently_player_turn = False
+                    self.currently_dealer_turn = True
 
             if self.currently_dealer_turn:
                 if self.dealer.hand.allowed_to_hit:
@@ -552,6 +529,7 @@ class Blackjack:
                 if self.currently_dealer_turn is True:
                     self.currently_dealer_turn = False
                     self.game_over = True
+                    self.pause_iterations_for_game_over = True
 
             if self.game_over:
                 self.determine_winner()
@@ -583,7 +561,11 @@ class Blackjack:
                         self.draw_text("Push Both Hands", self.text_font, (0, 0, 0), 370, 263)
 
             # display hand values on the screen
-            self.draw_text(f'{self.player.hand.hand_value}', self.text_font, (0, 0, 0), 110, 263)
+            if self.split_hand is None:
+                self.draw_text(f'{self.player.hand.hand_value}', self.text_font, (0, 0, 0), 110, 263)
+            else:
+                self.draw_text(f'{self.player.hand.hand_value}', self.text_font, (0, 0, 0), 110, 263)
+                self.draw_text(f'{self.split_hand.hand_value}', self.text_font, (0, 0, 0), 70, 263)
 
             if len(self.dealer.hand.hand) == 2:
                 value = 0
@@ -604,7 +586,11 @@ class Blackjack:
                     print(" ")
                     print(" ")
                     print(" ")
+                    print("--------------------------------------------------------")
+                    print("--------------------------------------------------------")
                     print("--------------------- PLAY AGAIN -----------------------")
+                    print("--------------------------------------------------------")
+                    print("--------------------------------------------------------")
                     print(" ")
                     print(" ")
                     print(" ")

@@ -22,7 +22,7 @@ class Deck:
             suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
             # List containing the 13 different card values
-            values = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"]
+            values = ["Ace", "2", "3"]
 
             # Iterate through each suit
             for suit in suits:
@@ -31,10 +31,6 @@ class Deck:
                 for value in values:
                     new_card = Card(suit, value)
                     self.deck.append(new_card)
-
-        for count in range(2):
-            cut_card = Card("None", "Cut Card")
-            self.deck.append(cut_card)
 
     """ Method used to randomize the deck after reaching cut card or starting game. """
     def shuffle_deck(self):

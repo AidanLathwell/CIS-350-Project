@@ -108,7 +108,6 @@ class Hand:
         # assign temporary hand value to the self.hand_value variable for global use
 
         self.hand_value = new_hand_value
-        return self.hand_value
 
     def calc_ability_to_hit(self):
         aces_count = 0
@@ -138,9 +137,10 @@ class Hand:
             self.allowed_to_hit = False
         elif aces_count >= 2 and self.hand_value <= 21:
             self.allowed_to_hit = True
-
-        print(self.allowed_to_hit)
-        return self.allowed_to_hit
+        elif temp_hand_value < 17:
+            self.allowed_to_hit = True
+        else:
+            self.allowed_to_hit = False
 
     """ Logic for when you create another hand. Cannot access action in player class
         since hand is a hand ovject not a player"""
