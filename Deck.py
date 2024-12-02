@@ -22,7 +22,7 @@ class Deck:
             suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
             # List containing the 13 different card values
-            values = ["Ace", "2", "3"]
+            values = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"]
 
             # Iterate through each suit
             for suit in suits:
