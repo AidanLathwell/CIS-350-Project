@@ -92,6 +92,7 @@ class Blackjack:
         self.pause_iterations_for_game_over = False
         self.text_font = pygame.font.Font(None, 32)
         self.game_over_text = []
+        self.number_of_bets_subtracted = 0
 
         # Initial cards, only used for the beginning of the games display
         self.player_card_1 = None
@@ -298,25 +299,27 @@ class Blackjack:
     """ Method called after the game ends to determine the winner. """
     def determine_winner(self):
 
-        # Check which case applies to the game state and assign results
-        if 21 >= self.player.hand.hand_value > self.dealer.hand.hand_value:
-            self.winner = self.player
-            self.player.balance += self.bet_amount
-            self.dealer.balance -= self.bet_amount
-        elif 21 >= self.dealer.hand.hand_value > self.player.hand.hand_value:
-            self.winner = self.dealer
-            self.player.balance -= self.bet_amount
-            self.dealer.balance += self.bet_amount
-        elif self.player.hand.hand_value > 21 >= self.dealer.hand.hand_value:
-            self.winner = self.dealer
-            self.player.balance -= self.bet_amount
-            self.dealer.balance += self.bet_amount
-        elif self.dealer.hand.hand_value > 21 >= self.player.hand.hand_value:
-            self.winner = self.player
-            self.player.balance += self.bet_amount
-            self.dealer.balance -= self.bet_amount
-        elif self.player.hand.hand_value == self.dealer.hand.hand_value:
-            self.winner = None
+        if self.game_over and self.number_of_bets_subtracted == 0:
+            self.number_of_bets_subtracted += 1
+            # Check which case applies to the game state and assign results
+            if 21 >= self.player.hand.hand_value > self.dealer.hand.hand_value:
+                self.winner = self.player
+                self.player.balance += self.bet_amount
+                self.dealer.balance -= self.bet_amount
+            elif 21 >= self.dealer.hand.hand_value > self.player.hand.hand_value:
+                self.winner = self.dealer
+                self.player.balance -= self.bet_amount
+                self.dealer.balance += self.bet_amount
+            elif self.player.hand.hand_value > 21 >= self.dealer.hand.hand_value:
+                self.winner = self.dealer
+                self.player.balance -= self.bet_amount
+                self.dealer.balance += self.bet_amount
+            elif self.dealer.hand.hand_value > 21 >= self.player.hand.hand_value:
+                self.winner = self.player
+                self.player.balance += self.bet_amount
+                self.dealer.balance -= self.bet_amount
+            elif self.player.hand.hand_value == self.dealer.hand.hand_value:
+                self.winner = None
 
     """ Method called to restart the game. This method can only be called after the
         game is over. It will set the game variables back to their original state 
@@ -337,10 +340,12 @@ class Blackjack:
 
         # Set all variables back to original game state prior to start
         self.currently_player_turn = True
+        self.player.hand.already_hit = False
         self.currently_dealer_turn = False
         self.pause_iterations_for_game_over = False
         self.game_over = False
         self.winner = None
+        self.number_of_bets_subtracted = 0
 
         # Call play game method to start another game
         self.play_game()
