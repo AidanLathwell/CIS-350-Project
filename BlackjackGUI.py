@@ -93,6 +93,8 @@ class Blackjack:
         self.text_font = pygame.font.Font(None, 32)
         self.game_over_text = []
         self.number_of_bets_subtracted = 0
+        self.bet_message_display = "Bet Amount (change before hitting):"
+        self.user_text = ""
 
         # Initial cards, only used for the beginning of the games display
         self.player_card_1 = None
@@ -525,13 +527,37 @@ class Blackjack:
                     run = False
                     self.play_again()
 
-            # Update screen display after each iteration
-            pygame.display.update()
-
             """ EVENT HANDLER """
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+
+                if self.player.hand.already_hit is False:
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_BACKSPACE:
+                            self.user_text = self.user_text[:-1]
+                        else:
+                            self.user_text += event.unicode
+                            self.bet_amount = int(self.user_text)
+
+            # display original bet amount if no new bet
+            if self.user_text == "":
+                self.draw_text("25", self.text_font, (255, 255, 255), 565, 40)
+                self.bet_amount = 25
+            else:
+
+                # display bet amount message and value
+                self.draw_text(self.user_text, self.text_font, (255, 255, 255), 565, 40)
+            self.draw_text("Bet Amount (change before hitting) :", self.text_font, (255, 255, 255), 170, 40)
+
+            # Display player and dealer balances
+            self.draw_text("Player Balance:", self.text_font, (255, 255, 255), 10, 560)
+            self.draw_text(f'{self.player.balance}', self.text_font, (255, 255, 255), 180, 560)
+            self.draw_text("Dealer Balance:", self.text_font, (255, 255, 255), 550, 560)
+            self.draw_text(f'{self.dealer.balance}', self.text_font, (255, 255, 255), 722, 560)
+
+            # Update screen display after each iteration
+            pygame.display.update()
 
 
 test = Blackjack(screen)
