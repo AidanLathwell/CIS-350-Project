@@ -11,6 +11,8 @@ screen = pygame.display.set_mode((800, 600))
 
 """ Button class that wil create button objects to display on the screen. """
 class Button:
+
+    
     def __init__(self, x, y, image, scale):
         width = image.get_width()
         height = image.get_height()
@@ -46,8 +48,11 @@ class Button:
         # Draw onto screen
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
+
 """ Outline class that will create the outline of the blackjack table on the screen. """
 class Outline:
+
+    
     def __init__(self, x, y, image, scale):
         width = image.get_width()
         height = image.get_height()
@@ -72,8 +77,11 @@ class cardObject:
     def draw(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
+
 """ Blackjack class that will run the gui and all game logic. """
 class Blackjack:
+
+    
     def __init__(self, screen):
 
         # Instance Variables
@@ -386,7 +394,7 @@ class Blackjack:
             if self.currently_dealer_turn or self.game_over:
                 self.dealer_card_2.draw()
             else:
-                self.dealer_hidden_card.draw()
+               self.dealer_hidden_card.draw()
 
             """ This for loop will draw the players cards onto the screen. Because
                 this is a never ending while loop, the cards need to be redrawn
