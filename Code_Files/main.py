@@ -1,9 +1,9 @@
 import PySimpleGUI as sg
 
 # All the stuff inside your window.
-layout = [  [sg.Text("What's your name?")],
+layout = [[sg.Text("What's your name?")],
             [sg.InputText()],
-            [sg.Button('Ok'), sg.Button('Cancel')] ]
+            [sg.Button('Ok'), sg.Button('Cancel')]]
 
 # Create the Window
 window = sg.Window('Hello Example', layout)
