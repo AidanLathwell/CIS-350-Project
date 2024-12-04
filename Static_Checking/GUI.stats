@@ -1,2 +1,0 @@
-************* Module Gui
-Gui.py:1:0: E0401: Unable to import 'pygame' (import-error)

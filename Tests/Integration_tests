@@ -1,0 +1,10 @@
+Objective: Ensure that when the player starts the game, two cards are dealt to both the player and the dealer, and one of the dealer’s cards is revealed.
+
+Pre-Condition: None
+
+Test Steps:
+
+The player clicks the "Play" button to start the game.
+The system starts the game and deals two cards to the player and two cards to the dealer.
+One of the dealer’s cards is revealed to the player.
+
