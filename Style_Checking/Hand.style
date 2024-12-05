@@ -1,17 +1,24 @@
-Hand.py:7:80: E501 line too long (87 > 79 characters)
-Hand.py:13:80: E501 line too long (92 > 79 characters)
-Hand.py:17:80: E501 line too long (90 > 79 characters)
-Hand.py:18:80: E501 line too long (85 > 79 characters)
-Hand.py:18:86: W291 trailing whitespace
-Hand.py:25:80: E501 line too long (84 > 79 characters)
-Hand.py:26:80: E501 line too long (85 > 79 characters)
-Hand.py:62:80: E501 line too long (85 > 79 characters)
-Hand.py:69:80: E501 line too long (90 > 79 characters)
-Hand.py:70:80: E501 line too long (95 > 79 characters)
-Hand.py:71:80: E501 line too long (90 > 79 characters)
-Hand.py:71:91: W291 trailing whitespace
-Hand.py:75:80: E501 line too long (84 > 79 characters)
-Hand.py:77:31: W292 no newline at end of file
-11      E501 line too long (87 > 79 characters)
+../Code_Files/Hand.py:3:1: E302 expected 2 blank lines, found 1
+../Code_Files/Hand.py:9:80: E501 line too long (87 > 79 characters)
+../Code_Files/Hand.py:18:80: E501 line too long (92 > 79 characters)
+../Code_Files/Hand.py:22:80: E501 line too long (90 > 79 characters)
+../Code_Files/Hand.py:23:80: E501 line too long (85 > 79 characters)
+../Code_Files/Hand.py:23:86: W291 trailing whitespace
+../Code_Files/Hand.py:30:80: E501 line too long (84 > 79 characters)
+../Code_Files/Hand.py:31:80: E501 line too long (85 > 79 characters)
+../Code_Files/Hand.py:50:80: E501 line too long (89 > 79 characters)
+../Code_Files/Hand.py:56:80: E501 line too long (99 > 79 characters)
+../Code_Files/Hand.py:57:80: E501 line too long (94 > 79 characters)
+../Code_Files/Hand.py:59:80: E501 line too long (89 > 79 characters)
+../Code_Files/Hand.py:74:80: E501 line too long (80 > 79 characters)
+../Code_Files/Hand.py:77:80: E501 line too long (85 > 79 characters)
+../Code_Files/Hand.py:78:80: E501 line too long (86 > 79 characters)
+../Code_Files/Hand.py:85:80: E501 line too long (93 > 79 characters)
+../Code_Files/Hand.py:91:80: E501 line too long (81 > 79 characters)
+../Code_Files/Hand.py:91:82: W291 trailing whitespace
+../Code_Files/Hand.py:102:80: E501 line too long (87 > 79 characters)
+../Code_Files/Hand.py:126:40: W292 no newline at end of file
+1       E302 expected 2 blank lines, found 1
+16      E501 line too long (87 > 79 characters)
 2       W291 trailing whitespace
 1       W292 no newline at end of file

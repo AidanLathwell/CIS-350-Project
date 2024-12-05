@@ -1,9 +1,9 @@
 import unittest
-import Card
-import Dealer
-import BlackjackGUI
-import Blackjack_Game
-import PLayer
+from Dealer import Dealer
+from Card import Card
+from BlackjackGUI import BlackjackGUI
+from Blackjack_Game import Blackjack_Game
+from Player import Player
 import time 
 
 

@@ -6,6 +6,7 @@ from Hand import Hand
 from Player import Player
 
 
+
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
 

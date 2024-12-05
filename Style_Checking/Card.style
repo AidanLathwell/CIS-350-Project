@@ -1,4 +1,2 @@
-Card.py:10:80: E501 line too long (92 > 79 characters)
-Card.py:12:46: W292 no newline at end of file
-1       E501 line too long (92 > 79 characters)
-1       W292 no newline at end of file
+../Code_Files/Card.py:10:80: E501 line too long (81 > 79 characters)
+1       E501 line too long (81 > 79 characters)

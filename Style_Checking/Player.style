@@ -1,26 +1,18 @@
-Player.py:3:1: E302 expected 2 blank lines, found 1
-Player.py:9:80: E501 line too long (96 > 79 characters)
-Player.py:15:80: E501 line too long (89 > 79 characters)
-Player.py:18:80: E501 line too long (81 > 79 characters)
-Player.py:26:80: E501 line too long (91 > 79 characters)
-Player.py:27:80: E501 line too long (92 > 79 characters)
-Player.py:34:80: E501 line too long (83 > 79 characters)
-Player.py:37:80: E501 line too long (90 > 79 characters)
-Player.py:46:80: E501 line too long (85 > 79 characters)
-Player.py:47:80: E501 line too long (97 > 79 characters)
-Player.py:52:80: E501 line too long (86 > 79 characters)
-Player.py:61:80: E501 line too long (81 > 79 characters)
-Player.py:62:80: E501 line too long (93 > 79 characters)
-Player.py:68:80: E501 line too long (94 > 79 characters)
-Player.py:69:80: E501 line too long (97 > 79 characters)
-Player.py:74:80: E501 line too long (95 > 79 characters)
-Player.py:75:80: E501 line too long (93 > 79 characters)
-Player.py:75:94: W291 trailing whitespace
-Player.py:83:80: E501 line too long (86 > 79 characters)
-Player.py:86:80: E501 line too long (94 > 79 characters)
-Player.py:113:80: E501 line too long (91 > 79 characters)
-Player.py:116:80: E501 line too long (95 > 79 characters)
-Player.py:119:80: E501 line too long (91 > 79 characters)
+../Code_Files/Player.py:4:1: E302 expected 2 blank lines, found 1
+../Code_Files/Player.py:10:80: E501 line too long (96 > 79 characters)
+../Code_Files/Player.py:16:80: E501 line too long (81 > 79 characters)
+../Code_Files/Player.py:20:80: E501 line too long (91 > 79 characters)
+../Code_Files/Player.py:21:80: E501 line too long (92 > 79 characters)
+../Code_Files/Player.py:28:80: E501 line too long (86 > 79 characters)
+../Code_Files/Player.py:42:80: E501 line too long (94 > 79 characters)
+../Code_Files/Player.py:43:80: E501 line too long (97 > 79 characters)
+../Code_Files/Player.py:48:80: E501 line too long (95 > 79 characters)
+../Code_Files/Player.py:49:80: E501 line too long (93 > 79 characters)
+../Code_Files/Player.py:49:94: W291 trailing whitespace
+../Code_Files/Player.py:59:80: E501 line too long (90 > 79 characters)
+../Code_Files/Player.py:63:80: E501 line too long (85 > 79 characters)
+../Code_Files/Player.py:90:34: W292 no newline at end of file
 1       E302 expected 2 blank lines, found 1
-21      E501 line too long (96 > 79 characters)
+11      E501 line too long (96 > 79 characters)
 1       W291 trailing whitespace
+1       W292 no newline at end of file
