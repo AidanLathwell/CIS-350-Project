@@ -4,10 +4,10 @@ from Card import Card
 class Dealer:
     def __init__(self):
 
-        # Hand class variable object, contains the list for current hand and class functionality
+        """ Hand class variable object, contains the list for current hand and class functionality"""
         self.hand = Hand()
 
-        # Int variable to keep track of casinos balance after games played
+        """ Int variable to keep track of casinos balance after games played"""
         self.balance = 10000
 
     """ Method internally called by print message to represent list of cards. """
@@ -42,10 +42,10 @@ class Dealer:
         the player uses. It will add cards to the dealers hand until circumstances occur. """
     def play(self, deck):
 
-        # Check if dealer is allowed to hit
+        """ Check if dealer is allowed to hit"""
         if self.hand.allowed_to_hit is True:
 
-            # Get top card of the deck and add it to players hand.
+            """ Get top card of the deck and add it to players hand."""
             card = deck.hit()
             self.hand.hand.append(card)
             self.hand.calc_hand_value()
