@@ -11,7 +11,7 @@ One of the dealer’s cards is revealed to the player.
 
 Verify:
   Passed
-  Both set of card shoed and game started fine
+  Both set of card showed and game started when I clicked the start button
 
 [2]Objective: Ensure that two random cards are dealt to both the player and the dealer when the game starts.
 
