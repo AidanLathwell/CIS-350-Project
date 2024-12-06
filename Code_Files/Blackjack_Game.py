@@ -3,6 +3,7 @@ from Player import Player
 from Dealer import Dealer
 
 class Blackjack:
+    """Blackjack class holds most of the logic for the termail based game"""
     def __init__(self):
 
         """ Deck class variable object, contains the deck list and deck class functionality"""
