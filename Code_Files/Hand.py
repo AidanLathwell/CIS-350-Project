@@ -3,16 +3,16 @@ from Card import Card
 class Hand:
     def __init__(self):
 
-        # List variable that will hold the current cards in your hand
+        """ List variable that will hold the current cards in your hand"""
         self.hand = []
 
-        # Int variable to keep track of the current value of all cards combined in hand
+        """ Int variable to keep track of the current value of all cards combined in hand"""
         self.hand_value = 0
 
-        # Boolean variable to update if a player can still hit or not
+        """ Boolean variable to update if a player can still hit or not"""
         self.allowed_to_hit = True
 
-        # Boolean to track ability to double
+        """ Boolean to track ability to double"""
         self.already_hit = False
 
     """ Method internally called by print message to represent list of cards. // chatgpt """
@@ -24,7 +24,7 @@ class Hand:
          calculated value to the self.hand.value variable after each call. """
     def calc_hand_value(self):
 
-        # Temp variable to update with current hand value
+        """ Temp variable to update with current hand value"""
         new_hand_value = 0
 
         """ Int variable to count number of aces in hand. Variable is needed because
@@ -44,7 +44,7 @@ class Hand:
             else:
                 new_hand_value += int(card.value)
 
-        # Assign new hand value to calculated hand value
+        """ Assign new hand value to calculated hand value"""
         self.hand_value = new_hand_value
 
         """ Handling multiple aces new hand value (specifically this part of code will be
@@ -67,11 +67,11 @@ class Hand:
 
                 temp_card_value = None
 
-            # Check to see if you need to change ace value to 1 from 11
+            """ Check to see if you need to change ace value to 1 from 11"""
             if (self.hand_value - hand_value) == 11:
                 new_hand_value -= 10
 
-            # Variable to update, prevents portion from happening more than once
+            """ Variable to update, prevents portion from happening more than once"""
             iterations += 1
 
         """ Only 1 ace in your hand will ever be 11. This portion of code will handle
@@ -85,7 +85,7 @@ class Hand:
                 if card.value == "Ace" and already_counted_aces == 1 and new_hand_value > 21:
                     new_hand_value -= 10
 
-        # update hand value
+        """ update hand value"""
         self.hand_value = new_hand_value
 
     """ This method determines if a player is able to hit or not, and updates the 
@@ -94,7 +94,7 @@ class Hand:
         aces_count = 0
         temp_hand_value = 0
 
-        # Calculate hand value
+        """ Calculate hand value"""
         for card in self.hand:
             if card.value == "Ace":
                 aces_count += 1
@@ -104,7 +104,7 @@ class Hand:
             else:
                 temp_hand_value += int(card.value)
 
-        # Assign ability to hit based on cards in hand value
+        """ Assign ability to hit based on cards in hand value"""
         if aces_count == 1 and self.hand_value <= 21 and len(self.hand) > 2:
             self.allowed_to_hit = True
         elif aces_count == 1 and self.hand_value == 21 and len(self.hand) == 2:

@@ -4,13 +4,13 @@ from Card import Card
 class Player:
     def __init__(self, name, balance):
 
-        # String variable that contains players name
+        """ String variable that contains players name"""
         self.name = name
 
-        # Hand class variable object, contains the list for current hand and class functionality
+        """ Hand class variable object, contains the list for current hand and class functionality"""
         self.hand = Hand()
 
-        # Int variable to keep track of balance before and after playing games
+        """ Int variable to keep track of balance before and after playing games"""
         self.balance = balance
 
     """ Method internally called by print message to represent list of cards. """
@@ -22,18 +22,18 @@ class Player:
         do a normal hit. """
     def hit(self, deck):
 
-        # If hand value is at least 17, check if player is still allowed to hit
+        """ If hand value is at least 17, check if player is still allowed to hit"""
         if self.hand.allowed_to_hit is True:
 
-            # Assign variable card to the top card returned from Deck class hit method
+            """ Assign variable card to the top card returned from Deck class hit method"""
             card = deck.hit()
             self.hand.already_hit = True
 
-            # Check if deck isn't empty
+            """ Check if deck isn't empty"""
             if card:
-                self.hand.hand.append(card)    # Call hand method
+                self.hand.hand.append(card)    """ Call hand method"""
 
-        # Update hand value and ability to hit
+        """ Update hand value and ability to hit"""
         self.hand.calc_hand_value()
         self.hand.calc_ability_to_hit()
 
@@ -50,17 +50,17 @@ class Player:
         value. """
     def double(self, deck):
 
-        # Check that a player has not previously hit
+        """ Check that a player has not previously hit"""
         if self.hand.already_hit is False:
 
-            # Check if hand is allowed to be hit
+            """ Check if hand is allowed to be hit"""
             if self.hand.allowed_to_hit is True:
 
-                # Assign variable card to the top card returned from Deck class hit method
+                """ Assign variable card to the top card returned from Deck class hit method"""
                 card = deck.hit()
                 self.hand.hand.append(card)
 
-                # Manually assign hand ability to hit, you can not hit after doubling
+                """ Manually assign hand ability to hit, you can not hit after doubling"""
                 self.hand.already_hit = True
                 self.hand.allowed_to_hit = False
 
