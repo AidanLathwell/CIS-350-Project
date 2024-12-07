@@ -11,7 +11,7 @@ One of the dealer’s cards is revealed to the player.
 
 Verify:
   Passed
-  Both set of card showed and game started when I clicked the start button
+  When play button was selected the window opened and two cards were delt to the player and dealer.
 
 [2]Objective: Ensure that two random cards are dealt to both the player and the dealer when the game starts.
 
@@ -23,7 +23,7 @@ The system deals two cards to the player and two cards to the dealer.
 
 Verify:
   Passed
-  Both sets of cards were random
+  Program was ran three times and every time had two different cards for each the player and the dealer.
 
 [3]Objective: Ensure that one of the dealer’s cards is revealed to the player after the initial deal.
 
@@ -35,7 +35,7 @@ Steps:
   One of the dealer’s cards is revealed to the player.
 Verify:
   Passed
-  The dealers card doesn't reveal till the end.
+  Program was ran and one of the two dealers cards is hidden to start.
 
 [4]Objective: Ensure the player can view their cards after they are dealt.
 
@@ -46,7 +46,7 @@ Steps:
   The player’s cards should be visible to the player.
 Verify:
   passed
-  playergot delt cards
+  Once the program is started the player has two cards that they can view the value of.
 
 [5]Objective: Ensure the player can request an additional card (hit).
 
@@ -58,7 +58,7 @@ Steps:
   The player clicks the "Hit" button to request an additional card.
 Verify:
   passed
-  The hit button added a card
+  When the hit button was selected it added a card the players screen with a value they can view.
 
 [6]Objective: Ensure the player can double their bet when selecting the "Hit" option.
 
@@ -71,7 +71,7 @@ Steps:
   The player selects the option to double their bet.
 Verify:
   passed
-  The bet doubles when button pressed
+  Once the bet button is "pushed" it doubles the player bet for the hand.
 
 [7]Objective: Ensure the player can choose to stand after viewing their cards.
 
@@ -82,7 +82,7 @@ Steps:
   The player clicks the "Stand" button to stop taking cards.
 Verify:
   passed
-  The stand will stop the hand 
+  The stand button when pressed stops the hand and the outcome is calculated.
 
 [8]Objective: Ensure the dealer automatically hits if their hand totals less than 17.
 
@@ -94,7 +94,7 @@ Steps:
   The dealer's hand totals less than 17.
 Verift:
   passed
-  THe dealer will auto hit under 17
+  When the program is ran and the dealer has less then 17 they are forced to hit.
 
 [9]Objective: Ensure the dealer stands when their hand is 17 or higher.
 
@@ -106,7 +106,7 @@ Steps:
   The dealer’s hand totals 17 or higher.
 Verify:
   passed
-  The dealer auto stands at 17
+  When program ran if the dealer has more then 17 they stand.
 
 [10]Objective: Ensure the system correctly compares the player’s and dealer’s hands and determines the winner.
 
@@ -118,7 +118,7 @@ Steps:
   The system compares the player’s hand and the dealer’s hand to determine the winner.
 Verify:
   passed
-  winner is correct
+  When program was ran the outcome was calculated correctly.
 
 [11]Objective: Ensure the current cards and scores are displayed after each action.
 
@@ -129,7 +129,7 @@ Steps:
   The player clicks the "Hit" or "Stand" button.
 Verify:
   passed
-  Cards and scores are correc 
+  The program was ran and after each move the scores and cards are all displayed.
 
 [12]Objective: Ensure the system prompts the player for their next action (exit or new round).
 
@@ -141,29 +141,18 @@ Steps:
   The system prompts the player to either exit or start a new rounds.
 Verify:
   passed
-  New round button is working
+  When the hand is over a new round button shows up when pressed starts a new hand.
 
-[13]Objective: Ensure the player can exit the game by clicking the "Quit Game" button.
+[13]Objective: Ensure the player can exit the game by clicking the exit button.
 
 Pre-Condition: The player is in the middle of a round.
 Steps:
   The player clicks the start button to start the game.
   The system deals two cards to the player and the dealer.
-  The player clicks the "Quit Game" button.
+  The player clicks the exit button.
 Verify:
   passed
-  Quit Game button works
-
-[14]Objective: Ensure the game exits within 5 seconds after the player selects the quit option.
-
-Pre-Condition: The player has clicked the "Quit Game" button.
-Steps:
-  The player clicks the start button to start the game.
-  The system deals two cards to the player and the dealer.
-  The player clicks the "Quit Game" button.
-Verify:
-  passed
-  Quit game within the time 
+  When the exit tab button is pressed the program will close.
 
 
 
